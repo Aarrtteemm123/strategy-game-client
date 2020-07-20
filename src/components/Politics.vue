@@ -15,6 +15,7 @@
           <v-expansion-panel-header>Population</v-expansion-panel-header>
           <p>Laws: {{ selected }}</p>
           <v-expansion-panel-content v-for="law in PopLaws" v-bind:key="law">
+            <p>Price: 1000</p>
               <v-checkbox v-hover="" v-model="selected" :label=law.name+law.description :value=law.name></v-checkbox>
             <v-expansion-panel-content v-for="item in law.modifiers" v-bind:key="item">
               <div class="text-left" style="font-size: large" v-bind:class="{greenText:item.color==='green',redText:item.color==='red',whiteText:item.color==='white'}">

@@ -11,16 +11,16 @@
           Basic statistic
         </p>
         <v-avatar size="100">
-          <img
-                  src="https://static.posters.cz/image/1300/%D0%A4%D0%BE%D1%82%D0%BE%D1%88%D0%BF%D0%B0%D0%BB%D0%B5%D1%80%D0%B8/flag-great-britain-uk-416x254-cm-130g/m2-vlies-non-woven-i44071.jpg"
+          <v-img
+                  :src=srcFlagImage
                   alt="flag"
-          >
+          ></v-img>
         </v-avatar>
         <div style="margin-top: 20px;font-size: large">
           <p><strong>Name country: {{nameCountry}}</strong></p>
           <p><strong>Population: {{population}}</strong></p>
           <p><strong>Budget: {{budget}}$</strong></p>
-          <p><strong>GDP: {{gdp}}$</strong></p>
+          <p><strong>Total profit: {{totalProfitCountry}}$</strong></p>
           <p><strong>Economic place: {{economicPlace}}</strong></p>
           <p><strong>Military place: {{militaryPlace}}</strong></p>
           <p><strong>Won battles: {{battlesWon}}</strong></p>
@@ -91,7 +91,7 @@
                 nameCountry: 'Great Britain',
                 population: 100000,
                 budget: 1200000,
-                gdp: 200000,
+                totalProfitCountry: 200000,
                 economicPlace: 1,
                 militaryPlace: 3,
                 farms: 23,
@@ -125,7 +125,7 @@
                             {id:9,type:'Diamond',number:24,place:1,srcImage:'mine_goods/diamond.jpg'},
                         ],
                     },
-                    { tab: 'Industry goods',
+                    { tab: 'Industrial goods',
                         tableData:[
                             {id:1,type:'Bakery',number:10,place:1,srcImage:'industry_goods/bakery.jpg'},
                             {id:2,type:'Canned food',number:10,place:1,srcImage:'industry_goods/canned_food.jpg'},
@@ -166,6 +166,7 @@
                     { text: 'Place', value: 'place' },
                 ],
                 goodsData: [{
+                    name: 'value',
                     data: [400, 430, 448, 470, 540, 580, 690, 1100, 1200, 1380]
                 }],
                 goodsChartOptions: {

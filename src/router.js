@@ -8,12 +8,13 @@ export default new Router({
     routes: [
         {
             path: '/',
+            redirect: '/login',
             name: 'home',
             component: App
         },
         {
-            path: '/title',
-            name: 'title',
+            path: '/login',
+            name: 'login',
             component: () => import('./components/Title')
         },
         {
@@ -22,8 +23,8 @@ export default new Router({
             component: () => import('./components/Register')
         },
         {
-            path: '/main',
-            name: 'main',
+            path: '/game/:userId',
+            name: 'game',
             component: () => import('./components/Main')
         }
     ]

@@ -19,7 +19,7 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="unit.dialog = false">Close</v-btn>
+          <v-btn color="blue darken-1" text @click="cancelChanges">Close</v-btn>
           <v-btn color="blue darken-1" text @click="saveChanges">Save</v-btn>
         </v-card-actions>
       </v-card>
@@ -37,6 +37,11 @@
             }
         },
         methods:{
+            cancelChanges()
+            {
+                this.unit.dialog = false
+
+            },
             saveChanges()
             {
                 this.unit.dialog = false

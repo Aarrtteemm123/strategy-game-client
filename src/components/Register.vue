@@ -64,9 +64,10 @@
             clkBtnRegister() {
                 // register user
                 console.log('registering new user')
+                router.push({path: 'login'})
             },
             clkBtnBack() {
-                router.push({path: 'title'})
+                router.push({path: 'login'})
             },
             checkSnackbar()
             {

@@ -23,6 +23,7 @@
 
 <script>
     import router from "@/router";
+    import UserService from '@/services/user-service'
 
     export default {
         name: "Title",
@@ -32,8 +33,14 @@
             },
             clkBtnLogin() {
                 // auth user
+                UserService.login({name:'Artem'}).then(response => {
+                    console.log(response.data)
+                }).catch(e => {
+                    console.log(e)
+                })
                 console.log('auth user');
-                router.push({path: 'main'})
+                let userId = '5f104d84';
+                router.push({ path: `/game/${userId}` })
             }
         }
     }

@@ -111,12 +111,13 @@
             <Trade v-if="items[0].children[7].active"></Trade>
             <Military v-if="items[0].children[8].active"></Military>
             <Account v-if="items[1].active"></Account>
-            <News v-if="items[2].active"></News>
-            <AboutProject v-if="items[6].active"></AboutProject>
-            <Help v-if="items[5].active"></Help>
-            <SendFeedback v-if="items[4].active"></SendFeedback>
-            <Settings v-if="items[3].active"></Settings>
-            <Exit v-if="items[7].active"></Exit>
+            <Players v-if="items[2].active"></Players>
+            <News v-if="items[3].active"></News>
+            <AboutProject v-if="items[7].active"></AboutProject>
+            <Help v-if="items[6].active"></Help>
+            <SendFeedback v-if="items[5].active"></SendFeedback>
+            <Settings v-if="items[4].active"></Settings>
+            <Exit v-if="items[8].active"></Exit>
           </v-row>
         </v-container>
       </v-content>
@@ -144,10 +145,13 @@
     import Trade from "@/components/Trade";
     import Industry from "@/components/Industry";
     import BasicStatistic from "@/components/BasicStatistic";
+    import Players from "@/components/Players";
+    import UserService from "@/services/user-service"
 
     export default {
         name: "Main",
         components: {
+            Players,
             BasicStatistic,
             Industry,
             Trade,
@@ -169,18 +173,19 @@
                         active: false,
                         realActive:true,
                         children: [
-                            {active: true, icon: 'mdi-chart-pie', text: 'Basic statistic'},
+                            {active: false, icon: 'mdi-chart-pie', text: 'Basic statistic'},
                             {active: false, icon: 'mdi-currency-usd-circle-outline', text: 'Budget'},
                             {active: false, icon: 'mdi-atom', text: 'Technology'},
                             {active: false, icon: 'mdi-factory', text: 'Industry'},
                             {active: false, icon: 'mdi-barn', text: 'Warehouse'},
                             {active: false, icon: 'mdi-bank', text: 'Politics'},
                             {active: false, icon: 'mdi-human-male-female', text: 'Population'},
-                            {active: false, icon: 'mdi-cart-outline', text: 'Trade'},
-                            {active: false, icon: 'mdi-ammunition', text: 'Military'},
+                            {active: true, icon: 'mdi-cart-outline', text: 'Trade'},
+                            {active: false, icon: 'mdi-ammunition', text: 'Army'},
                         ],
                     },
                     {active: false, icon: 'mdi-account-circle', text: 'Account'},
+                    {active: false, icon: 'mdi-account-group', text: 'Players'},
                     {active: false, icon: 'mdi-newspaper-variant-multiple', text: 'News'},
                     {active: false, icon: 'mdi-cog', text: 'Settings'},
                     {active: false, icon: 'mdi-message', text: 'Send feedback'},
@@ -192,6 +197,14 @@
         },
         methods: {
             choiceMenu(item) {
+                UserService.delete('asd').
+                then(response => {
+                    console.log(response.data)
+                }).catch(e => {
+                    console.log(e)
+                })
+
+
                 console.log(item);
                 this.items.forEach(el => {
                     el.text === item ? el.active = true : el.active = false

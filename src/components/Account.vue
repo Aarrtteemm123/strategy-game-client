@@ -17,6 +17,7 @@
           >
         </v-avatar>
         <div style="margin-top: 20px;font-size: large">
+          <p><strong>ID: {{id}}</strong></p>
           <p><strong>Name country: {{nameCountry}}</strong></p>
           <p><strong>GDP: {{gdp}}$</strong></p>
           <p><strong>Economic place: {{economicPlace}}</strong></p>
@@ -38,6 +39,7 @@
               Edit
             </v-btn>
           </template>
+
           <v-card>
             <v-card-title>
               <span class="headline">User Profile</span>
@@ -76,7 +78,46 @@
         </v-dialog>
       </v-row>
 
+      <v-btn @click="isOpenDialogDeleteAccount = true" x-large style="width: 150px;margin-bottom: 20px"
+             rounded color="error" dark>
+        Delete
+      </v-btn>
+
     </v-card>
+    <v-row justify="center">
+      <v-dialog
+              v-model="isOpenDialogDeleteAccount"
+              max-width="290"
+      >
+        <v-card>
+          <v-card-title style="margin-left: 42px" class="headline">Delete account</v-card-title>
+
+          <v-card-text>
+            Are you sure you want delete your account?
+          </v-card-text>
+
+          <v-card-actions>
+            <v-spacer></v-spacer>
+
+            <v-btn
+                    color="red darken-1"
+                    text
+                    @click="isOpenDialogDeleteAccount = false"
+            >
+              No
+            </v-btn>
+
+            <v-btn
+                    color="blue darken-1"
+                    text
+                    @click="deleteAccount()"
+            >
+              Yes
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </v-row>
   </v-app>
 </template>
 
@@ -88,6 +129,7 @@
             return{
                 srcFlagImage: 'https://static.posters.cz/image/1300/%D0%A4%D0%BE%D1%82%D0%BE%D1%88%D0%BF%D0%B0%D0%BB%D0%B5%D1%80%D0%B8/flag-great-britain-uk-416x254-cm-130g/m2-vlies-non-woven-i44071.jpg',
                 nameCountry: 'Great Britain',
+                id: 'gdsk453kfd8d0fgdf0h',
                 gdp: 200000,
                 economicPlace: 1,
                 militaryPlace: 3,
@@ -98,6 +140,7 @@
                 days: 36,
                 isOpenEditDialog: false,
                 showPassword: false,
+                isOpenDialogDeleteAccount: false,
             }
         },
         methods:{
@@ -105,6 +148,11 @@
             {
                 // edit user data
                 this.isOpenEditDialog = false;
+            },
+            deleteAccount()
+            {
+                // delete account
+                this.isOpenDialogDeleteAccount = false;
             }
         }
     }
