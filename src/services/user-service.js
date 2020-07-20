@@ -7,9 +7,9 @@ class UserService {
         return http.post("/login", data);
     }
 
-    logout(id)
+    logout(userId)
     {
-        return http.post(`/game/${id}`);
+        return http.post(`/game/${userId}`);
     }
 
     register(username,password,email,countryName,linkOnFlag)
@@ -18,15 +18,27 @@ class UserService {
             username : username,
             password : password,
             email : email,
-            countryName : countryName,
-            linkOnFlag : linkOnFlag
+            country_name : countryName,
+            link_on_flag : linkOnFlag
         }
         return http.post('/register',data)
     }
 
-    delete(user_id)
+    changeUserData(userId,username,password,email,countryName,linkOnFlag)
     {
-        return http.delete(`/game/delete_account/${user_id}`)
+        let data = {
+            username : username,
+            password : password,
+            email : email,
+            country_name : countryName,
+            link_on_flag : linkOnFlag
+        }
+        return http.post(`/game/change_user_data/${userId}`,data)
+    }
+
+    delete(userId)
+    {
+        return http.delete(`/game/delete_account/${userId}`)
     }
 }
 
