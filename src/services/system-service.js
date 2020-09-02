@@ -1,9 +1,10 @@
 import http from "@/http-common";
 
 class SystemService {
-    getNews(userId)
+
+    getView(userId,nameView)
     {
-        return http.get(`/game/get_news/${userId}`);
+        return http.get(`/game/get_view/${userId}/${nameView}`)
     }
 
     sendFeedback(userId,rating,msg)

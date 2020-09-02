@@ -13,7 +13,7 @@ class GameService {
             name_tax : nameTax,
             new_value : newValue
         }
-        return http.post(`/game/change_taxes/${userId}`,data)
+        return http.put(`/game/change_taxes/${userId}`,data)
     }
 
     upgradeTechnology(userId,nameTechnology)
@@ -21,7 +21,7 @@ class GameService {
         let data = {
             name_technology:nameTechnology
         }
-        return http.post(`/game/upgrade_technology/${userId}`,data)
+        return http.put(`/game/upgrade_technology/${userId}`,data)
     }
 
     buildIndustry(userId,nameBuilding)
@@ -29,7 +29,7 @@ class GameService {
         let data = {
             name_building:nameBuilding
         }
-        return http.post(`/game/build_industry/${userId}`,data)
+        return http.put(`/game/build_industry/${userId}`,data)
     }
 
     removeIndustry(userId,nameBuilding)
@@ -37,7 +37,7 @@ class GameService {
         let data = {
             name_building:nameBuilding
         }
-        return http.post(`/game/remove_industry/${userId}`,data)
+        return http.put(`/game/remove_industry/${userId}`,data)
     }
 
     upgradeWarehouse(userId,nameWarehouse)
@@ -45,7 +45,7 @@ class GameService {
         let data = {
             name_warehouse:nameWarehouse
         }
-        return http.post(`/game/upgrade_warehouse/${userId}`,data)
+        return http.put(`/game/upgrade_warehouse/${userId}`,data)
     }
 
     setPoliticsLaw(userId,nameLaw)
@@ -53,7 +53,7 @@ class GameService {
         let data = {
             name_law:nameLaw
         }
-        return http.post(`/game/set_law/${userId}`,data)
+        return http.put(`/game/set_law/${userId}`,data)
     }
 
     cancelPoliticsLaw(userId,nameLaw)
@@ -61,7 +61,7 @@ class GameService {
         let data = {
             name_law:nameLaw
         }
-        return http.post(`/game/cancel_law/${userId}`,data)
+        return http.put(`/game/cancel_law/${userId}`,data)
     }
 
     buyGoods(userId,nameGoods,number)
@@ -88,15 +88,12 @@ class GameService {
             name_unit:nameUnit,
             new_number:newNumber
         }
-        return http.post(`/game/edit_army/${userId}`,data)
+        return http.put(`/game/edit_army/${userId}`,data)
     }
 
-    calculateWar(userId,defendingPlayerId)
+    calculateWar(userId,defendingPlayerName)
     {
-        let data = {
-            defending_player_id:defendingPlayerId,
-        }
-        return http.post(`/game/calculate_war/${userId}`,data)
+        return http.post(`/game/calculate_war/${userId}/${defendingPlayerName}`)
     }
 
 }

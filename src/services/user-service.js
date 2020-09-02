@@ -2,14 +2,14 @@ import http from "../http-common"
 
 class UserService {
 
-    login(data)
+    login(username,password)
     {
-        return http.post("/login", data);
+        return http.post(`/login/${username}/${password}`);
     }
 
     logout(userId)
     {
-        return http.post(`/game/${userId}`);
+        return http.post(`/logout/${userId}`);
     }
 
     register(username,password,email,countryName,linkOnFlag)
@@ -29,16 +29,15 @@ class UserService {
         let data = {
             username : username,
             password : password,
-            email : email,
             country_name : countryName,
             link_on_flag : linkOnFlag
         }
-        return http.post(`/game/change_user_data/${userId}`,data)
+        return http.put(`/game/change_user_data/${userId}`,data)
     }
 
-    delete(userId)
+    delete(userId,password)
     {
-        return http.delete(`/game/delete_account/${userId}`)
+        return http.delete(`/game/delete_account/${userId}/${password}`)
     }
 }
 

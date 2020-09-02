@@ -45,11 +45,15 @@
                         ],
                     },
                     {name:'machines and computers technology',price:1000,maxLevel:100,level:1,increasePrice:2,modifiers: [
-                            {value: '+0.1%', from: 'machines and computer technology', to:'industry', color: 'green'},
+                            {value: '+0.1%', from: 'machines and computer technology', to:'farms production', color: 'green'},
+                            {value: '+0.1%', from: 'machines and computer technology', to:'mines production', color: 'green'},
+                            {value: '+0.1%', from: 'machines and computer technology', to:'factories production', color: 'green'},
+                            {value: '+0.1%', from: 'machines and computer technology', to:'military factories production', color: 'green'},
                         ],
                     },
                     {name:'upgrade weapons',price:1000,maxLevel:100,level:1,increasePrice:2,modifiers: [
-                            {value: '+1%', from: 'upgrade weapons', to:'army', color: 'green'},
+                            {value: '+1%', from: 'upgrade weapons', to:'attack army', color: 'green'},
+                            {value: '+1%', from: 'upgrade weapons', to:'defence army', color: 'green'},
                         ],
                     },
                 ],

@@ -3,19 +3,19 @@
     <v-app>
       <h1 style="margin-top: 70px;margin-bottom: 50px">Welcome to register page</h1>
       <v-container style="width: 500px;height: 500px">
-        <v-text-field
+        <v-text-field v-model="username"
                 label="Username" outlined rounded clearable
         ></v-text-field>
-        <v-text-field type="password"
+        <v-text-field type="password" v-model="password"
                       label="Password" outlined rounded clearable
         ></v-text-field>
-        <v-text-field
+        <v-text-field v-model="email"
                 label="Email" outlined rounded clearable
         ></v-text-field>
-        <v-text-field
+        <v-text-field v-model="countryName"
                 label="Country" outlined rounded clearable
         ></v-text-field>
-        <v-text-field @focus="snackbar = true"
+        <v-text-field @focus="snackbar = true" v-model="flagImg"
                 label="Flag" outlined rounded clearable
         ></v-text-field>
         <v-btn v-on:click="clkBtnBack()" x-large
@@ -49,22 +49,44 @@
 
 <script>
     import router from "@/router";
+    import UserService from '@/services/user-service'
 
     export default {
         name: "Register",
         data()
         {
             return{
+                username:'',
+                password:'',
+                email:'',
+                countryName:'',
+                flagImg:'',
                 snackbar: false,
                 closeSnackbar: true,
-                step: 1
             }
         },
         methods: {
             clkBtnRegister() {
                 // register user
-                console.log('registering new user')
-                router.push({path: 'login'})
+                UserService.register(this.username,this.password,this.email,
+                this.countryName,this.flagImg).then(response => {
+                    if (response.status === 201)
+                    {
+                        console.log(response.data)
+                        console.log(response.status)
+                        let userId = response.data
+                        router.push({ path: `/game/${userId}` })
+                    }
+                }).catch(error => {
+                    if (error.response) {
+                        if (error.response.status === 400)
+                        {
+                            alert('Try change your data')
+                        }
+                        console.log(error.response.data);
+                        console.log(error.response.status);
+                    }
+                })
             },
             clkBtnBack() {
                 router.push({path: 'login'})

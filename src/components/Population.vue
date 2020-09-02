@@ -51,9 +51,9 @@
                     {value: '+10%', msg: 'nationals region', color: 'green'},
                     {value: '-8%', msg: 'old guns', color: 'red'},
                 ],
-                series: [40,10,20,15,15],
+                series: [40,10,20,15,12,3],
                 chartOptions: {
-                    labels: ['Others', 'Solders', 'Workers', 'Miners','Farmers']
+                    labels: ['Others', 'Solders', 'Workers', 'Miners','Farmers','Free']
                 }
             }
         }

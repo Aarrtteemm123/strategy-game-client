@@ -44,20 +44,20 @@
           <v-col class="text-left">
           <span
                   class="display-1 font-weight-light"
-                  v-text="value_1"
+                  v-text="popTax"
           ></span>
             <span style="font-weight: bolder;font-size: x-large"> %</span>
 
-            <span  style="font-weight: normal;font-size: x-large;margin-left: 20px">Profit: {{value_1*k_1}}$</span>
+            <span  style="font-weight: normal;font-size: x-large;margin-left: 20px">Profit: {{popTaxProfit}}$</span>
 
 
           </v-col>
         </v-row>
 
         <v-slider
-                v-model="value_1"
-                @change="savePopTaxes"
-                :color="color"
+                v-model="popTax"
+                @change="changeTaxes('population_taxes',popTax)"
+                :color="getColor(popTax)"
                 track-color="grey"
                 :thumb-size="28"
                 thumb-label="always"
@@ -66,8 +66,8 @@
         >
           <template v-slot:prepend>
             <v-icon
-                    :color="color"
-                    @click="decrement"
+                    :color="getColor(popTax)"
+                    @click="decrementPopTaxes"
             >
               mdi-minus
             </v-icon>
@@ -75,8 +75,8 @@
 
           <template v-slot:append>
             <v-icon
-                    :color="color"
-                    @click="increment"
+                    :color="getColor(popTax)"
+                    @click="incrementPopTaxes"
             >
               mdi-plus
             </v-icon>
@@ -88,88 +88,10 @@
 
         </v-slider>
 
-        <v-expansion-panels>
+        <v-expansion-panels hover>
           <v-expansion-panel>
             <v-expansion-panel-header>MODIFIERS</v-expansion-panel-header>
-            <v-expansion-panel-content v-for="item in modifiers" v-bind:key="item">
-              <div style="font-size: large" v-bind:class="{greenText:item.color==='green',redText:item.color==='red',whiteText:item.color==='white'}">
-                {{item.value}}  {{item.msg}}
-              </div>
-            </v-expansion-panel-content>
-          </v-expansion-panel>
-        </v-expansion-panels>
-      </v-card-text>
-    </v-card>
-    <v-card
-
-            width="600"
-            elevation="8"
-            style="margin-top: 30px"
-    >
-      <v-toolbar
-              flat
-              dense
-      >
-        <v-toolbar-title>
-          <span class="subheading">ARMY TAXES</span>
-        </v-toolbar-title>
-        <v-spacer></v-spacer>
-      </v-toolbar>
-
-      <v-card-text>
-        <v-row
-                class="mb-4"
-                justify="space-between"
-        >
-          <v-col class="text-left">
-          <span
-                  class="display-1 font-weight-light"
-                  v-text="value_1"
-          ></span>
-            <span style="font-weight: bolder;font-size: x-large"> %</span>
-
-            <span  style="font-weight: normal;font-size: x-large;margin-left: 20px">Profit: {{value_1*k_1}}$</span>
-
-          </v-col>
-        </v-row>
-
-        <v-slider
-                v-model="value_1"
-                :color="color"
-                track-color="grey"
-                :thumb-size="28"
-                thumb-label="always"
-                min="1"
-                max="100"
-        >
-          <template v-slot:prepend>
-            <v-icon
-                    :color="color"
-                    @click="decrement"
-            >
-              mdi-minus
-            </v-icon>
-          </template>
-
-          <template v-slot:append>
-            <v-icon
-                    :color="color"
-                    @click="increment"
-            >
-              mdi-plus
-            </v-icon>
-          </template>
-
-          <template v-slot:thumb-label="{ value }">
-            {{ satisfactionEmojis[Math.min(Math.floor(value / 10), 9)] }}
-          </template>
-
-        </v-slider>
-
-        <v-expansion-panels>
-          <v-expansion-panel>
-            <v-expansion-panel-header>MODIFIERS</v-expansion-panel-header>
-            <v-expansion-panel-content v-for="item in modifiers" v-bind:key="item">
+            <v-expansion-panel-content v-for="item in popModifiers" v-bind:key="item">
               <div style="font-size: large" v-bind:class="{greenText:item.color==='green',redText:item.color==='red',whiteText:item.color==='white'}">
                 {{item.value}}  {{item.msg}}
               </div>
@@ -202,18 +124,19 @@
           <v-col class="text-left">
           <span
                   class="display-1 font-weight-light"
-                  v-text="value_1"
+                  v-text="farmsTax"
           ></span>
             <span style="font-weight: bolder;font-size: x-large"> %</span>
 
-            <span  style="font-weight: normal;font-size: x-large;margin-left: 20px">Profit: {{value_1*k_1}}$</span>
+            <span  style="font-weight: normal;font-size: x-large;margin-left: 20px">Profit: {{farmsTaxProfit}}$</span>
 
           </v-col>
         </v-row>
 
         <v-slider
-                v-model="value_1"
-                :color="color"
+                v-model="farmsTax"
+                :color="getColor(farmsTax)"
+                @change="changeTaxes('farms_taxes',farmsTax)"
                 track-color="grey"
                 :thumb-size="28"
                 thumb-label="always"
@@ -222,8 +145,8 @@
         >
           <template v-slot:prepend>
             <v-icon
-                    :color="color"
-                    @click="decrement"
+                    :color="getColor(farmsTax)"
+                    @click="decrementFarmsTaxes"
             >
               mdi-minus
             </v-icon>
@@ -231,8 +154,8 @@
 
           <template v-slot:append>
             <v-icon
-                    :color="color"
-                    @click="increment"
+                    :color="getColor(farmsTax)"
+                    @click="incrementFarmsTaxes"
             >
               mdi-plus
             </v-icon>
@@ -247,7 +170,7 @@
         <v-expansion-panels>
           <v-expansion-panel>
             <v-expansion-panel-header>MODIFIERS</v-expansion-panel-header>
-            <v-expansion-panel-content v-for="item in modifiers" v-bind:key="item">
+            <v-expansion-panel-content v-for="item in farmsModifiers" v-bind:key="item">
               <div style="font-size: large" v-bind:class="{greenText:item.color==='green',redText:item.color==='red',whiteText:item.color==='white'}">
                 {{item.value}}  {{item.msg}}
               </div>
@@ -280,18 +203,19 @@
           <v-col class="text-left">
           <span
                   class="display-1 font-weight-light"
-                  v-text="value_1"
+                  v-text="minesTax"
           ></span>
             <span style="font-weight: bolder;font-size: x-large"> %</span>
 
-            <span  style="font-weight: normal;font-size: x-large;margin-left: 20px">Profit: {{value_1*k_1}}$</span>
+            <span  style="font-weight: normal;font-size: x-large;margin-left: 20px">Profit: {{minesTaxProfit}}$</span>
 
           </v-col>
         </v-row>
 
         <v-slider
-                v-model="value_1"
-                :color="color"
+                v-model="minesTax"
+                :color="getColor(minesTax)"
+                @change="changeTaxes('mines_taxes',minesTax)"
                 track-color="grey"
                 :thumb-size="28"
                 thumb-label="always"
@@ -300,8 +224,8 @@
         >
           <template v-slot:prepend>
             <v-icon
-                    :color="color"
-                    @click="decrement"
+                    :color="getColor(minesTax)"
+                    @click="decrementMinesTaxes"
             >
               mdi-minus
             </v-icon>
@@ -309,8 +233,8 @@
 
           <template v-slot:append>
             <v-icon
-                    :color="color"
-                    @click="increment"
+                    :color="getColor(minesTax)"
+                    @click="incrementMinesTaxes"
             >
               mdi-plus
             </v-icon>
@@ -325,7 +249,7 @@
         <v-expansion-panels>
           <v-expansion-panel>
             <v-expansion-panel-header>MODIFIERS</v-expansion-panel-header>
-            <v-expansion-panel-content v-for="item in modifiers" v-bind:key="item">
+            <v-expansion-panel-content v-for="item in minesModifiers" v-bind:key="item">
               <div style="font-size: large" v-bind:class="{greenText:item.color==='green',redText:item.color==='red',whiteText:item.color==='white'}">
                 {{item.value}}  {{item.msg}}
               </div>
@@ -358,18 +282,19 @@
           <v-col class="text-left">
           <span
                   class="display-1 font-weight-light"
-                  v-text="value_1"
+                  v-text="factoriesTax"
           ></span>
             <span style="font-weight: bolder;font-size: x-large"> %</span>
 
-            <span  style="font-weight: normal;font-size: x-large;margin-left: 20px">Profit: {{value_1*k_1}}$</span>
+            <span  style="font-weight: normal;font-size: x-large;margin-left: 20px">Profit: {{factoriesTaxProfit}}$</span>
 
           </v-col>
         </v-row>
 
         <v-slider
-                v-model="value_1"
-                :color="color"
+                v-model="factoriesTax"
+                :color="getColor(factoriesTax)"
+                @change="changeTaxes('factories_taxes',factoriesTax)"
                 track-color="grey"
                 :thumb-size="28"
                 thumb-label="always"
@@ -378,8 +303,8 @@
         >
           <template v-slot:prepend>
             <v-icon
-                    :color="color"
-                    @click="decrement"
+                    :color="getColor(factoriesTax)"
+                    @click="decrementFactoriesTaxes"
             >
               mdi-minus
             </v-icon>
@@ -387,8 +312,8 @@
 
           <template v-slot:append>
             <v-icon
-                    :color="color"
-                    @click="increment"
+                    :color="getColor(factoriesTax)"
+                    @click="incrementFactoriesTaxes"
             >
               mdi-plus
             </v-icon>
@@ -403,7 +328,7 @@
         <v-expansion-panels>
           <v-expansion-panel>
             <v-expansion-panel-header>MODIFIERS</v-expansion-panel-header>
-            <v-expansion-panel-content v-for="item in modifiers" v-bind:key="item">
+            <v-expansion-panel-content v-for="item in factoriesModifiers" v-bind:key="item">
               <div style="font-size: large" v-bind:class="{greenText:item.color==='green',redText:item.color==='red',whiteText:item.color==='white'}">
                 {{item.value}}  {{item.msg}}
               </div>
@@ -412,77 +337,247 @@
         </v-expansion-panels>
       </v-card-text>
     </v-card>
+    <v-card
 
+            width="600"
+            elevation="8"
+            style="margin-top: 30px"
+    >
+      <v-toolbar
+              flat
+              dense
+      >
+        <v-toolbar-title>
+          <span class="subheading">ARMY TAXES</span>
+        </v-toolbar-title>
+        <v-spacer></v-spacer>
+      </v-toolbar>
+
+      <v-card-text>
+        <v-row
+                class="mb-4"
+                justify="space-between"
+        >
+          <v-col class="text-left">
+          <span
+                  class="display-1 font-weight-light"
+                  v-text="armyTax"
+          ></span>
+            <span style="font-weight: bolder;font-size: x-large"> %</span>
+
+            <span  style="font-weight: normal;font-size: x-large;margin-left: 20px">Profit: {{armyTaxProfit}}$</span>
+
+          </v-col>
+        </v-row>
+
+        <v-slider
+                v-model="armyTax"
+                :color="getColor(armyTax)"
+                @change="changeTaxes('military_taxes',armyTax)"
+                track-color="grey"
+                :thumb-size="28"
+                thumb-label="always"
+                min="1"
+                max="100"
+        >
+          <template v-slot:prepend>
+            <v-icon
+                    :color="getColor(armyTax)"
+                    @click="decrementArmyTaxes"
+            >
+              mdi-minus
+            </v-icon>
+          </template>
+
+          <template v-slot:append>
+            <v-icon
+                    :color="getColor(armyTax)"
+                    @click="incrementArmyTaxes"
+            >
+              mdi-plus
+            </v-icon>
+          </template>
+
+          <template v-slot:thumb-label="{ value }">
+            {{ satisfactionEmojis[Math.min(Math.floor(value / 10), 9)] }}
+          </template>
+
+        </v-slider>
+
+        <v-expansion-panels>
+          <v-expansion-panel>
+            <v-expansion-panel-header>MODIFIERS</v-expansion-panel-header>
+            <v-expansion-panel-content v-for="item in armyModifiers" v-bind:key="item">
+              <div style="font-size: large" v-bind:class="{greenText:item.color==='green',redText:item.color==='red',whiteText:item.color==='white'}">
+                {{item.value}}  {{item.msg}}
+              </div>
+            </v-expansion-panel-content>
+          </v-expansion-panel>
+        </v-expansion-panels>
+      </v-card-text>
+    </v-card>
   </v-app>
 </template>
 
 <script>
+    import GameService from "@/services/game-service"
+    import SystemService from "@/services/system-service"
     export default {
         name: "Budget",
         data()
         {
             return{
-                money: 1000000,
-                taxesProfit:3000,
-                farmsProfit:10000,
-                minesProfit:10000,
-                factoriesProfit:10000,
-                militaryProfit:2000,
-                militaryExpenses:2000,
-                totalProfit: 11000,
-                value_1: 50,
-                k_1:100000,
+                money: 0,
+                taxesProfit: 0,
+                farmsProfit:0,
+                minesProfit:0,
+                factoriesProfit:0,
+                militaryProfit:0,
+                militaryExpenses:0,
+                totalProfit: 0,
+
+                popTax: 0,
+                popTaxProfit:0,
+                popModifiers: [],
+
+                farmsTax: 0,
+                farmsTaxProfit: 0,
+                farmsModifiers: [],
+
+                minesTax: 0,
+                minesTaxProfit: 0,
+                minesModifiers: [],
+
+                factoriesTax: 0,
+                factoriesTaxProfit: 0,
+                factoriesModifiers: [],
+
+                armyTax: 0,
+                armyTaxProfit: 0,
+                armyModifiers: [],
+
                 satisfactionEmojis: ['😭', '😢', '☹️', '🙁', '😐', '🙂', '😊', '😁', '😄', '😍'].reverse(),
-                modifiers: [
-                    {value: '+10%', msg: 'nationals region', color: 'green'},
-                    {value: '-8%', msg: 'old guns', color: 'red'},
-                ],
+
             }
         },
-        computed: {
-            color () {
-                this.checkModifiers();
-                if (this.value_1 < 20) return 'indigo';
-                if (this.value_1 < 40) return 'teal';
-                if (this.value_1 < 60) return 'green';
-                if (this.value_1 < 80) return 'orange';
+        methods: {
+            getColor (taxValue) {
+                if (taxValue < 20) return 'indigo';
+                if (taxValue < 40) return 'teal';
+                if (taxValue < 60) return 'green';
+                if (taxValue < 80) return 'orange';
                 return 'red'
             },
-        },
+            updatePage()
+            {
+                console.log('Inside updatePage')
+                let userId = '5f4814cc59e648f9cfba7e09'
+                SystemService.getView(userId,'Budget').then(response => {
+                    if (response.status === 200)
+                    {
+                        console.log(response.data)
+                        console.log(response.status)
+                        this.money = response.data['money']
+                        this.taxesProfit = response.data['taxes_profit']
+                        this.farmsProfit = response.data['farms_profit']
+                        this.minesProfit = response.data['mines_profit']
+                        this.factoriesProfit = response.data['factories_profit']
+                        this.militaryProfit = response.data['army_taxes']['profit']
+                        this.militaryExpenses = response.data['military_expenses']
+                        this.totalProfit = response.data['total_profit']
 
-        methods: {
-            savePopTaxes()
+                        this.popTax = response.data['population_taxes']['percent_value']
+                        this.popTaxProfit = response.data['population_taxes']['profit']
+                        this.popModifiers = response.data['population_taxes']['modifiers']
+
+                        this.farmsTax = response.data['farms_taxes']['percent_value']
+                        this.farmsTaxProfit = response.data['farms_taxes']['profit']
+                        this.farmsModifiers = response.data['farms_taxes']['modifiers']
+
+                        this.minesTax = response.data['mines_taxes']['percent_value']
+                        this.minesTaxProfit = response.data['mines_taxes']['profit']
+                        this.minesModifiers = response.data['mines_taxes']['modifiers']
+
+                        this.factoriesTax = response.data['factories_taxes']['percent_value']
+                        this.factoriesTaxProfit = response.data['factories_taxes']['profit']
+                        this.factoriesModifiers = response.data['factories_taxes']['modifiers']
+
+                        this.armyTax = response.data['army_taxes']['percent_value']
+                        this.armyTaxProfit = response.data['army_taxes']['profit']
+                        this.armyModifiers = response.data['army_taxes']['modifiers']
+                    }
+                }).catch(error => {
+                    if (error.response) {
+                        console.log(error.response.data);
+                        console.log(error.response.status);
+                    }
+                })
+            },
+            changeTaxes(name, newValue)
             {
                 //saving population taxes
                 console.log('change taxes')
+                let userId = '5f4814cc59e648f9cfba7e09'
+                GameService.changeTax(userId,name,newValue).then(response => {
+                    if (response.status === 200)
+                    {
+                        console.log(response.data)
+                        console.log(response.status)
+                        this.updatePage()
+                    }
+                }).catch(error => {
+                    if (error.response) {
+                        console.log(error.response.data);
+                        console.log(error.response.status);
+                    }
+                })
+
             },
-            decrement () {
-                this.value_1--
+            decrementPopTaxes () {
+                this.popTax--
+                this.changeTaxes('population_taxes',this.popTax)
             },
-            increment () {
-                this.value_1++
+            incrementPopTaxes () {
+                this.popTax++
+                this.changeTaxes('population_taxes',this.popTax)
             },
-            checkModifiers()
-            {
-                if (this.value_1 < 20) this.modifiers = [];
-                else if (this.value_1 < 40) this.modifiers = [{value: '-8%', msg: 'old guns', color: 'red'},];
-                else if (this.value_1 < 60) this.modifiers = [
-                    {value: '-8%', msg: 'old guns', color: 'red'},
-                    {value: '-8%', msg: 'old guns', color: 'red'},
-                ];
-                else if (this.value_1 < 80) this.modifiers = [
-                    {value: '-8%', msg: 'old guns', color: 'red'},
-                    {value: '-8%', msg: 'old guns', color: 'red'},
-                    {value: '-8%', msg: 'old guns', color: 'red'},
-                ];
-                else this.modifiers = [
-                        {value: '-8%', msg: 'old guns', color: 'red'},
-                        {value: '-8%', msg: 'old guns', color: 'red'},
-                        {value: '-8%', msg: 'old guns', color: 'red'},
-                        {value: '-8%', msg: 'old guns', color: 'red'},
-                    ];
-            }
+            decrementFarmsTaxes () {
+                this.farmsTax--
+                this.changeTaxes('farms_taxes',this.farmsTax)
+            },
+            incrementFarmsTaxes () {
+                this.farmsTax++
+                this.changeTaxes('farms_taxes',this.farmsTax)
+            },
+            decrementMinesTaxes () {
+                this.minesTax--
+                this.changeTaxes('mines_taxes',this.minesTax)
+            },
+            incrementMinesTaxes () {
+                this.minesTax++
+                this.changeTaxes('mines_taxes',this.minesTax)
+            },
+            decrementFactoriesTaxes () {
+                this.factoriesTax--
+                this.changeTaxes('factories_taxes',this.factoriesTax)
+            },
+            incrementFactoriesTaxes () {
+                this.factoriesTax++
+                this.changeTaxes('factories_taxes',this.factoriesTax)
+            },
+            decrementArmyTaxes () {
+                this.armyTax--
+                this.changeTaxes('military_taxes',this.armyTax)
+            },
+            incrementArmyTaxes () {
+                this.armyTax++
+                this.changeTaxes('military_taxes',this.armyTax)
+            },
         },
+        mounted() {
+            console.log('Inside budget mounted');
+            this.updatePage() // equivalent to data download
+        }
     }
 </script>
 

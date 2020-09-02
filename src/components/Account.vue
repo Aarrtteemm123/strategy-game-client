@@ -64,7 +64,7 @@
                             label="Password*" required></v-text-field>
                   </v-col>
                   <v-col cols="12">
-                    <v-text-field v-model="email" label="Email*" required></v-text-field>
+                    <v-text-field disabled v-model="email" label="Email*" required></v-text-field>
                   </v-col>
                 </v-row>
               </v-container>
@@ -95,6 +95,8 @@
           <v-card-text>
             Are you sure you want delete your account?
           </v-card-text>
+
+          <v-text-field style="width: 200px;margin-left: 45px" label="Input your password*" v-model="bufferPassword" required></v-text-field>
 
           <v-card-actions>
             <v-spacer></v-spacer>
@@ -135,6 +137,7 @@
                 militaryPlace: 3,
                 username: 'Artem456',
                 password: 'qwerty45',
+                bufferPassword: '',
                 email: 'artem_45@gmail.com',
                 dataRegistration: '20.10.2020',
                 days: 36,
