@@ -59,7 +59,7 @@
         {
             buildIndustry(name)
             {
-                let userId = '5f4814cc59e648f9cfba7e09'
+                let userId = '5fb92cde490b69cce9f464df'
                 GameService.buildIndustry(userId,name).then(response => {
                     if (response.status === 200)
                     {
@@ -77,7 +77,7 @@
             },
             removeIndustry(name)
             {
-                let userId = '5f4814cc59e648f9cfba7e09'
+                let userId = '5fb92cde490b69cce9f464df'
                 console.log(name)
                 GameService.removeIndustry(userId,name).then(response => {
                     if (response.status === 200)
