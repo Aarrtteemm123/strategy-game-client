@@ -176,9 +176,9 @@
                         realActive:true,
                         children: [
                             {active: false, icon: 'mdi-chart-pie', text: 'Basic statistic'},
-                            {active: true, icon: 'mdi-currency-usd-circle-outline', text: 'Budget'},
+                            {active: false, icon: 'mdi-currency-usd-circle-outline', text: 'Budget'},
                             {active: false, icon: 'mdi-atom', text: 'Technology'},
-                            {active: false, icon: 'mdi-factory', text: 'Industry'},
+                            {active: true, icon: 'mdi-factory', text: 'Industry'},
                             {active: false, icon: 'mdi-barn', text: 'Warehouse'},
                             {active: false, icon: 'mdi-bank', text: 'Politics'},
                             {active: false, icon: 'mdi-human-male-female', text: 'Population'},

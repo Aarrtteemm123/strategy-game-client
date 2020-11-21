@@ -6,18 +6,18 @@
             elevation="8"
             style="margin-top: 20px"
     >
-      <v-card-subtitle style="margin-top: 10px;font-weight: bold;font-size: x-large">Technology</v-card-subtitle>
+      <v-card-subtitle style="margin-top: 10px;font-weight: bold;font-size: x-large">Technologies</v-card-subtitle>
       <v-card-text style="font-size: large;font-weight: bolder" class="text-left" v-for="technology in technologyLst" v-bind:key="technology">
         <hr>
         <p style="margin-top: 15px">Name: {{technology.name}}</p>
-        <p>Price upgrade: {{technology.price}}</p>
+        <p>Price upgrade: {{technology.price_upgrade}}</p>
         <p>Level: {{technology.level}}</p>
-        <p>Max level: {{technology.maxLevel}}</p>
-        <p>Total results: {{technology.level * 0.1}}%</p>
+        <p>Max level: {{technology.max_level}}</p>
+        <p>Total results: {{technology.percent_total_result}}%</p>
         <p class="text-center">Modifiers:</p>
         <v-card-text v-for="item in technology.modifiers" v-bind:key="item">
           <div class="text-center" style=" font-size:larger;margin-top: -20px" v-bind:class="{greenText:item.color==='green',redText:item.color==='red',whiteText:item.color==='white'}">
-            {{item.value}}  {{item.to}}
+            {{item.value}}  {{item.msg}}
           </div>
         </v-card-text>
         <v-btn @click="clkBtnUpgrade(technology)" style="margin-left: 230px" medium color="primary">Upgrade</v-btn>
@@ -34,37 +34,57 @@
 </template>
 
 <script>
+    import GameService from "@/services/game-service"
+    import SystemService from "@/services/system-service"
     export default {
         name: "Technology",
         data()
         {
             return{
-                technologyLst:[
-                    {name:'medicine technology',price:1000,maxLevel:100,level:1,increasePrice:2,modifiers: [
-                            {value: '+0.1%', from: 'medicine technology', to:'population', color: 'green'},
-                        ],
-                    },
-                    {name:'machines and computers technology',price:1000,maxLevel:100,level:1,increasePrice:2,modifiers: [
-                            {value: '+0.1%', from: 'machines and computer technology', to:'farms production', color: 'green'},
-                            {value: '+0.1%', from: 'machines and computer technology', to:'mines production', color: 'green'},
-                            {value: '+0.1%', from: 'machines and computer technology', to:'factories production', color: 'green'},
-                            {value: '+0.1%', from: 'machines and computer technology', to:'military factories production', color: 'green'},
-                        ],
-                    },
-                    {name:'upgrade weapons',price:1000,maxLevel:100,level:1,increasePrice:2,modifiers: [
-                            {value: '+1%', from: 'upgrade weapons', to:'attack army', color: 'green'},
-                            {value: '+1%', from: 'upgrade weapons', to:'defence army', color: 'green'},
-                        ],
-                    },
-                ],
+                technologyLst:[],
             }
         },
         methods:{
+            updatePage()
+            {
+                let userId = '5f4814cc59e648f9cfba7e09'
+                SystemService.getView(userId,'Technologies').then(response => {
+                    if (response.status === 200)
+                    {
+                        console.log(response.data)
+                        console.log(response.status)
+                        this.technologyLst = response.data
+
+                    }
+                }).catch(error => {
+                    if (error.response) {
+                        console.log(error.response.data);
+                        console.log(error.response.status);
+                    }
+                })
+            },
             clkBtnUpgrade(item)
             {
-                item.level++;
-                item.price *= item.increasePrice;
+                let userId = '5f4814cc59e648f9cfba7e09'
+                GameService.upgradeTechnology(userId,item.name).then(response => {
+                    if (response.status === 200)
+                    {
+                        console.log(response.data)
+                        console.log(response.status)
+                        this.updatePage()
+
+                    }
+                }).catch(error => {
+                    if (error.response) {
+                        console.log(error.response.data);
+                        console.log(error.response.status);
+                    }
+                })
             }
+        },
+        mounted() {
+            console.log('Inside technologies mounted');
+            this.updatePage() // equivalent to data download
         }
     }
 </script>

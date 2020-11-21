@@ -25,11 +25,11 @@
             style="margin-left: 22px;width: 1200px">
       <v-col
               v-for="item in farms"
-              :key="item"
+              :key="item.id+item"
               cols="12"
               sm="4"
       >
-        <FarmCard style="margin-bottom: 30px" v-if="activeBtn===0" v-bind:farm="item"></FarmCard>
+        <IndustryCard style="margin-bottom: 30px" v-on:update-page="updateIndustryPage" v-if="activeBtn===0" v-bind:factory="item"></IndustryCard>
       </v-col>
     </v-row>
 
@@ -38,11 +38,11 @@
             style="margin-left: 22px;width: 1200px">
       <v-col
               v-for="item in mines"
-              :key="item"
+              :key="item.id+item"
               cols="12"
               sm="4"
       >
-        <MinesCard style="margin-bottom: 30px" v-if="activeBtn===1" v-bind:mine="item"></MinesCard>
+        <IndustryCard style="margin-bottom: 30px" v-on:update-page="updateIndustryPage" v-if="activeBtn===1" v-bind:factory="item"></IndustryCard>
       </v-col>
     </v-row>
 
@@ -51,11 +51,24 @@
             style="margin-left: 22px;width: 1200px">
       <v-col
               v-for="item in factories"
-              :key="item"
+              :key="item.id+item"
               cols="12"
               sm="4"
       >
-        <IndustryCard style="margin-bottom: 30px" v-if="activeBtn===2" v-bind:factory="item"></IndustryCard>
+        <IndustryCard style="margin-bottom: 30px" v-on:update-page="updateIndustryPage" v-if="activeBtn===2" v-bind:factory="item"></IndustryCard>
+      </v-col>
+    </v-row>
+
+    <v-row
+            no-gutters
+            style="margin-left: 22px;width: 1200px">
+      <v-col
+              v-for="item in militaryFactories"
+              :key="item.id+item"
+              cols="12"
+              sm="4"
+      >
+        <IndustryCard v-on:update-page="updateIndustryPage" style="margin-bottom: 30px" v-if="activeBtn===3" v-bind:factory="item"></IndustryCard>
       </v-col>
     </v-row>
 
@@ -63,71 +76,48 @@
 </template>
 
 <script>
-    import FarmCard from "@/components/FarmCard";
-    import MinesCard from "@/components/MinesCard";
     import IndustryCard from "@/components/IndustryCard";
+    import SystemService from "@/services/system-service"
     export default {
         name: "Industry",
-        components: {IndustryCard, MinesCard, FarmCard},
+        components: {IndustryCard},
         data()
         {
             return{
                 activeBtn: 0,
-                farms:[
-                    {type:'Seed farm',productionSpeed:10,needFarmers:500,price:10000,numbers:1,srcImage:'farms_goods/seed.jpg'},
-                    {type:'Meat farm',productionSpeed:10,needFarmers:500,price:10000,numbers:1,srcImage:'farms_goods/meat.jpg'},
-                    {type:'Milk farm',productionSpeed:10,needFarmers:500,price:10000,numbers:1,srcImage:'farms_goods/milk.jpg'},
-                    {type:'Fish farm',productionSpeed:10,needFarmers:500,price:10000,numbers:1,srcImage:'farms_goods/fish.jpg'},
-                    {type:'Fruits farm',productionSpeed:10,needFarmers:500,price:10000,numbers:1,srcImage:'farms_goods/fruits.jpg'},
-                    {type:'Vegetables farm',productionSpeed:10,needFarmers:500,price:10000,numbers:1,srcImage:'farms_goods/vegetables.jpg'},
-                ],
-                mines:[
-                    {type:'Iron mine',productionSpeed:10,needMiners:500,price:10000,numbers:1,srcImage:'farms_goods/seed.jpg'},
-                    {type:'Aluminum mine',productionSpeed:10,needMiners:500,price:10000,numbers:1,srcImage:'farms_goods/meat.jpg'},
-                    {type:'Coal mine',productionSpeed:10,needMiners:500,price:10000,numbers:1,srcImage:'farms_goods/milk.jpg'},
-                    {type:'Oil well',productionSpeed:10,needMiners:500,price:10000,numbers:1,srcImage:'farms_goods/fish.jpg'},
-                    {type:'Silicon mine',productionSpeed:10,needMiners:500,price:10000,numbers:1,srcImage:'farms_goods/fruits.jpg'},
-                    {type:'Salt mine',productionSpeed:10,needMiners:500,price:10000,numbers:1,srcImage:'farms_goods/vegetables.jpg'},
-                    {type:'Minerals mine',productionSpeed:10,needMiners:500,price:10000,numbers:1,srcImage:'farms_goods/vegetables.jpg'},
-                    {type:'Gold mine',productionSpeed:10,needMiners:500,price:10000,numbers:1,srcImage:'farms_goods/vegetables.jpg'},
-                    {type:'Diamond mine',productionSpeed:10,needMiners:500,price:10000,numbers:1,srcImage:'farms_goods/vegetables.jpg'},
-                ],
-                factories:[
-                    {type:'Bakery factory',productionSpeed:20,needWorkers:2000,price:50000,numbers:1,srcImage:'farms_goods/seed.jpg',
-                        needGoods:[
-                            {id:1,name:'Seed',number:14,srcImage:'farms_goods/seed.jpg'},
-                        ]
-                    },
-                    {type:'Canned food factory',productionSpeed:20,needWorkers:2000,price:50000,numbers:1,srcImage:'farms_goods/seed.jpg',
-                        needGoods:[
-                            {id:1,name:'Seed',number:14,srcImage:'farms_goods/seed.jpg'},
-                            {id:2,name:'Meat',number:20,srcImage:'farms_goods/meat.jpg'},
-                        ]
-                    },
-                    {type:'Cheese factory',productionSpeed:20,needWorkers:2000,price:50000,numbers:1,srcImage:'farms_goods/seed.jpg',
-                        needGoods:[
-                            {id:1,name:'Milk',number:14,srcImage:'farms_goods/milk.jpg'},
-                        ]
-                    },
-                    {type:'Salt fish factory',productionSpeed:20,needWorkers:2000,price:50000,numbers:1,srcImage:'farms_goods/seed.jpg',
-                        needGoods:[
-                            {id:1,name:'Fish',number:14,srcImage:'farms_goods/fish.jpg'},
-                            {id:2,name:'Salt',number:20,srcImage:'farms_goods/salt.jpg'},
-                        ]
-                    },
-                    {type:'Juice factory',productionSpeed:20,needWorkers:2000,price:50000,numbers:1,srcImage:'farms_goods/seed.jpg',
-                        needGoods:[
-                            {id:1,name:'Fruits',number:14,srcImage:'farms_goods/fruits.jpg'},
-                            {id:2,name:'Glass',number:20,srcImage:'farms_goods/glass.jpg'},
-                        ]
-                    },
-                    {type:'Fuel factory',productionSpeed:20,needWorkers:2000,price:50000,numbers:1,srcImage:'farms_goods/seed.jpg',
-                        needGoods:[
-                            {id:1,name:'Oil',number:14,srcImage:'farms_goods/oil.jpg'},
-                        ]
-                    },
-                ],
+                farms:[],
+                mines:[],
+                factories:[],
+                militaryFactories:[],
             }
+        },
+        methods:
+        {
+            updateIndustryPage()
+            {
+                console.log('Inside industry updatePage')
+                let userId = '5f4814cc59e648f9cfba7e09'
+                SystemService.getView(userId,'Industry').then(response => {
+                    if (response.status === 200)
+                    {
+                        console.log(response.data)
+                        console.log(response.status)
+                        this.farms = response.data['farms']
+                        this.mines = response.data['mines']
+                        this.factories = response.data['factories']
+                        this.militaryFactories = response.data['military_factories']
+                    }
+                }).catch(error => {
+                    if (error.response) {
+                        console.log(error.response.data);
+                        console.log(error.response.status);
+                    }
+                })
+            },
+        },
+        mounted()
+        {
+            this.updateIndustryPage()
         }
     }
 </script>
