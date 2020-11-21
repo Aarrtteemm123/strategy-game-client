@@ -4,13 +4,13 @@ class GameService {
 
     getAll(userId)
     {
-        userId = '5fb932dc71f0f0d774134cc6'
+        userId = '5fb9425dd57895300fc7a8a7'
         return http.get(`/game/${userId}`)
     }
 
     changeTax(userId,nameTax,newValue)
     {
-        userId = '5fb932dc71f0f0d774134cc6'
+        userId = '5fb9425dd57895300fc7a8a7'
         let data = {
             name_tax : nameTax,
             new_value : newValue
@@ -20,7 +20,7 @@ class GameService {
 
     upgradeTechnology(userId,nameTechnology)
     {
-        userId = '5fb932dc71f0f0d774134cc6'
+        userId = '5fb9425dd57895300fc7a8a7'
         let data = {
             name_technology:nameTechnology
         }
@@ -29,7 +29,7 @@ class GameService {
 
     buildIndustry(userId,nameBuilding)
     {
-        userId = '5fb932dc71f0f0d774134cc6'
+        userId = '5fb9425dd57895300fc7a8a7'
         let data = {
             name_building:nameBuilding
         }
@@ -38,7 +38,7 @@ class GameService {
 
     removeIndustry(userId,nameBuilding)
     {
-        userId = '5fb932dc71f0f0d774134cc6'
+        userId = '5fb9425dd57895300fc7a8a7'
         let data = {
             name_building:nameBuilding
         }
@@ -47,7 +47,7 @@ class GameService {
 
     upgradeWarehouse(userId,nameWarehouse)
     {
-        userId = '5fb932dc71f0f0d774134cc6'
+        userId = '5fb9425dd57895300fc7a8a7'
         let data = {
             name_warehouse:nameWarehouse
         }
@@ -56,7 +56,7 @@ class GameService {
 
     setPoliticsLaw(userId,nameLaw)
     {
-        userId = '5fb932dc71f0f0d774134cc6'
+        userId = '5fb9425dd57895300fc7a8a7'
         let data = {
             name_law:nameLaw
         }
@@ -65,7 +65,7 @@ class GameService {
 
     cancelPoliticsLaw(userId,nameLaw)
     {
-        userId = '5fb932dc71f0f0d774134cc6'
+        userId = '5fb9425dd57895300fc7a8a7'
         let data = {
             name_law:nameLaw
         }
@@ -74,7 +74,7 @@ class GameService {
 
     buyGoods(userId,nameGoods,number)
     {
-        userId = '5fb932dc71f0f0d774134cc6'
+        userId = '5fb9425dd57895300fc7a8a7'
         let data = {
             name_goods:nameGoods,
             number:number
@@ -84,7 +84,7 @@ class GameService {
 
     sellGoods(userId,nameGoods,number)
     {
-        userId = '5fb932dc71f0f0d774134cc6'
+        userId = '5fb9425dd57895300fc7a8a7'
         let data = {
             name_goods:nameGoods,
             number:number
@@ -94,7 +94,7 @@ class GameService {
 
     editArmy(userId,nameUnit,newNumber)
     {
-        userId = '5fb932dc71f0f0d774134cc6'
+        userId = '5fb9425dd57895300fc7a8a7'
         let data = {
             name_unit:nameUnit,
             new_number:newNumber
@@ -104,7 +104,7 @@ class GameService {
 
     calculateWar(userId,defendingPlayerName)
     {
-        userId = '5fb932dc71f0f0d774134cc6'
+        userId = '5fb9425dd57895300fc7a8a7'
         return http.post(`/game/calculate_war/${userId}/${defendingPlayerName}`)
     }
 

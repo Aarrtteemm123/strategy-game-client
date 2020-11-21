@@ -4,13 +4,13 @@ class SystemService {
 
     getView(userId,nameView)
     {
-        userId = '5fb932dc71f0f0d774134cc6'
+        userId = '5fb9425dd57895300fc7a8a7'
         return http.get(`/game/get_view/${userId}/${nameView}`)
     }
 
     sendFeedback(userId,rating,msg)
     {
-        userId = '5fb92cde490b69cce9f464df'
+        userId = '5fb9425dd57895300fc7a8a7'
         let data = {
             rating:rating,
             msg:msg,

@@ -23,7 +23,7 @@
                   v-on="on"
           >Modifiers</v-btn>
         </template>
-        <v-card-text  v-for="item in modifiers" v-bind:key="item" style="font-size: medium;font-weight: bolder;">
+        <v-card-text  v-for="item in modifiers" v-bind:key="item.id+item" style="font-size: medium;font-weight: bolder;">
           <div style="margin-bottom: -20px" v-bind:class="{greenText:item.color==='green',redText:item.color==='red',whiteText:item.color==='white'}">
             {{item.value}}  {{item.msg}}
           </div>
@@ -34,28 +34,61 @@
 </template>
 
 <script>
-
+    import SystemService from "@/services/system-service"
     export default {
         name: "Population",
         data()
         {
             return {
-                population: 100000,
-                solders: 1000,
-                workers: 10000,
-                miners: 1000,
-                farmers: 100,
-                others: 60000,
-                totalProgress: 3.6,
-                modifiers: [
-                    {value: '+10%', msg: 'nationals region', color: 'green'},
-                    {value: '-8%', msg: 'old guns', color: 'red'},
-                ],
-                series: [40,10,20,15,12,3],
+                population: 0,
+                solders: 0,
+                workers: 0,
+                miners: 0,
+                farmers: 0,
+                others: 0,
+                totalProgress: 0,
+                modifiers: [],
+                series: [],
                 chartOptions: {
-                    labels: ['Others', 'Solders', 'Workers', 'Miners','Farmers','Free']
+                    labels: []
                 }
             }
+        },
+        methods:
+        {
+            updatePopulationPage()
+            {
+                let userId = '5fb9425dd57895300fc7a8a7'
+                SystemService.getView(userId,'Population').then(response => {
+                    if (response.status === 200)
+                    {
+                        console.log(response.data)
+                        console.log(response.status)
+                        this.population = response.data['population']
+                        this.solders = response.data['soldiers']
+                        this.workers = response.data['workers']
+                        this.miners = response.data['miners']
+                        this.farmers = response.data['farmers']
+                        this.others = response.data['others']
+                        this.totalProgress = response.data['percent_total_progress']
+                        this.modifiers = response.data['modifiers']
+                        this.series = response.data['pie_chart_data']
+                        this.chartOptions = {
+                            labels: response.data['pie_chart_labels']
+                        }
+                    }
+                }).catch(error => {
+                    if (error.response) {
+                        console.log(error.response.data);
+                        console.log(error.response.status);
+                    }
+                })
+            }
+        },
+        mounted()
+        {
+            console.log('Inside population mounted')
+            this.updatePopulationPage()
         }
     }
 </script>
