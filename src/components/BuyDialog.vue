@@ -13,9 +13,8 @@
                   label="Numbers"
                   type="number"
           ></v-text-field>
-          <p>Price: {{numberBuying*goods.buyPrice}}$</p>
-          <p>Max buy: {{maxHave - goods.have}} tonnes</p>
-          <p>Delta price: +{{numberBuying*0.001}}%</p>
+          <p>Total price: {{numberBuying*goods.price}}$</p>
+          <p>Max buy: {{goods.warehouseCapacity - goods.have}} tonnes</p>
         </v-card-text>
 
         <v-card-actions>
@@ -32,7 +31,7 @@
           <v-btn
                   color="blue darken-1"
                   text
-                  @click="goods.flagBuy = false"
+                  @click="[closeBuyDialog(),buy(goods.name,numberBuying)]"
           >
             Confirm
           </v-btn>
@@ -43,14 +42,41 @@
 </template>
 
 <script>
+    import GameService from "@/services/game-service"
     export default {
         name: "BuyDialog",
         props: ['goods'],
         data()
         {
             return{
-                numberBuying:0,
-                maxHave: 10000,
+                numberBuying:0
+            }
+        },
+        methods:
+        {
+
+            closeBuyDialog()
+            {
+                this.goods.flagBuy = false
+            },
+
+            buy(name,number)
+            {
+                let userId = '5fb92cde490b69cce9f464df'
+                GameService.buyGoods(userId,name,number).then(response => {
+                    if (response.status === 200)
+                    {
+                        console.log(response.data)
+                        console.log(response.status)
+                        if (this.goods.have + Number(this.numberBuying) <= this.goods.warehouseCapacity && Number(this.numberBuying) > 0)
+                          this.goods.have += Number(this.numberBuying)
+                    }
+                }).catch(error => {
+                    if (error.response) {
+                        console.log(error.response.data);
+                        console.log(error.response.status);
+                    }
+                })
             }
         }
     }

@@ -13,10 +13,8 @@
                   label="Numbers"
                   type="number"
           ></v-text-field>
-          <p>Profit: {{numberSelling*goods.sellPrice}}$</p>
-          <p>Max sell: {{youHave}} tonnes</p>
-          <p>Delta price: -{{numberSelling*0.001}}%</p>
-          <p>Min price: {{goods.minPrice}}$</p>
+          <p>Profit: {{numberSelling*goods.price}}$</p>
+          <p>Max sell: {{goods.have}} tonnes</p>
         </v-card-text>
 
         <v-card-actions>
@@ -33,7 +31,7 @@
           <v-btn
                   color="blue darken-1"
                   text
-                  @click="goods.flagSell = false"
+                  @click="[closeSellDialog(),sell(goods.name,numberSelling)]"
           >
             Confirm
           </v-btn>
@@ -44,6 +42,7 @@
 </template>
 
 <script>
+    import GameService from "@/services/game-service"
     export default {
         name: "SellDialog",
         props: ['goods'],
@@ -51,8 +50,33 @@
         {
             return{
                 numberSelling:0,
-                youHave: 10000,
             }
+        },
+        methods:
+        {
+            closeSellDialog()
+            {
+                this.goods.flagSell = false
+            },
+
+            sell(name,number)
+            {
+                let userId = '5fb92cde490b69cce9f464df'
+                GameService.sellGoods(userId,name,number).then(response => {
+                    if (response.status === 200)
+                    {
+                        console.log(response.data)
+                        console.log(response.status)
+                        if (this.goods.have - Number(this.numberSelling) >= 0 && Number(this.numberSelling) > 0)
+                            this.goods.have -= Number(this.numberSelling)
+                    }
+                }).catch(error => {
+                    if (error.response) {
+                        console.log(error.response.data);
+                        console.log(error.response.status);
+                    }
+                })
+            },
         }
     }
 </script>
