@@ -95,10 +95,10 @@
 
 <style scoped>
   .greenText{
-    color: green;
+    color: rgb(0,168,107);
   }
   .redText{
-    color: red;
+    color: rgb(255,40,0);
   }
   .whiteText{
     color: white;

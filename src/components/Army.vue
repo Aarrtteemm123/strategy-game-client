@@ -5,7 +5,7 @@
             style="margin-left: 22px;width: 1200px">
       <v-col
               v-for="item in army"
-              :key="item"
+              :key="item.id + item"
               cols="12"
               sm="6"
       >
@@ -19,154 +19,55 @@
 <script>
     import MilitaryCard from "@/components/MilitaryCard";
     import EditMilitaryDialog from "@/components/EditMilitaryDialog";
-
+    import SystemService from "@/services/system-service"
     export default {
         name: "Military",
         components: {EditMilitaryDialog, MilitaryCard},
         data() {
             return {
-                army:[
-                    {
-                        name: 'Infantry',
-                        srcImage: "infantry.jpg",
-                        number: 10000,
-                        manpower: 500000,
-                        weaponOnStorage: 10000,
-                        maintenancePriceUnit: 3,
-                        show: false,
-                        dialog: false,
-                        peopleOnUnit: 1,
-                        modifiers: [
-                            {value: '+10%', msg: 'nationals region', color: 'green'},
-                            {value: '+5%', msg: 'low taxes', color: 'green'},
-                            {value: '-8%', msg: 'old guns', color: 'red'},
-                            {value: '-2%', msg: 'old tactics', color: 'red'},
-                        ],
-                        srcDataInfantry: [
-                            {unit: 'Infantry', attack: 10, defence: 30},
-                            {unit: 'Artillery', attack: 15, defence: 5},
-                            {unit: 'PTO', attack: 25, defence: 40},
-                            {unit: 'PVO', attack: 50, defence: 90},
-                            {unit: 'Tank', attack: 5, defence: 5},
-                            {unit: 'Aviation', attack: 1, defence: 15},
-                        ]
-                    },
-                    {
-                        name: 'Artillery',
-                        srcImage: "artillery.jpg",
-                        number: 1000,
-                        manpower: 500000,
-                        weaponOnStorage: 100,
-                        maintenancePriceUnit: 2,
-                        show: false,
-                        dialog: false,
-                        peopleOnUnit: 4,
-                        modifiers: [
-
-                        ],
-                        srcDataInfantry: [
-                            {unit: 'Infantry', attack: 60, defence: 10},
-                            {unit: 'Artillery', attack: 30, defence: 5},
-                            {unit: 'PTO', attack: 25, defence: 20},
-                            {unit: 'PVO', attack: 25, defence: 15},
-                            {unit: 'Tank', attack: 10, defence: 15},
-                            {unit: 'Aviation', attack: 5, defence: 10},
-                        ]
-                    },
-                    {
-                        name: 'PTO',
-                        srcImage: "pto.jpg",
-                        number: 500,
-                        manpower: 500000,
-                        weaponOnStorage: 10,
-                        maintenancePriceUnit: 1,
-                        show: false,
-                        dialog: false,
-                        peopleOnUnit: 4,
-                        modifiers: [
-                            {value: '+10%', msg: 'nationals region', color: 'green'},
-                            {value: '-8%', msg: 'old guns', color: 'red'},
-                        ],
-                        srcDataInfantry: [
-                            {unit: 'Infantry', attack: 30, defence: 10},
-                            {unit: 'Artillery', attack: 20, defence: 10},
-                            {unit: 'PTO', attack: 20, defence: 15},
-                            {unit: 'PVO', attack: 25, defence: 15},
-                            {unit: 'Tank', attack: 70, defence: 20},
-                            {unit: 'Aviation', attack: 1, defence: 10},
-                        ]
-                    },
-                    {
-                        name: 'PVO',
-                        srcImage: "pvo.jpg",
-                        number: 500,
-                        manpower: 500000,
-                        weaponOnStorage: 10,
-                        maintenancePriceUnit: 4,
-                        show: false,
-                        dialog: false,
-                        peopleOnUnit: 5,
-                        modifiers: [
-                            {value: '+10%', msg: 'nationals region', color: 'green'},
-                            {value: '-8%', msg: 'old guns', color: 'red'},
-                        ],
-                        srcDataInfantry: [
-                            {unit: 'Infantry', attack: 25, defence: 10},
-                            {unit: 'Artillery', attack: 5, defence: 15},
-                            {unit: 'PTO', attack: 20, defence: 5},
-                            {unit: 'PVO', attack: 5, defence: 40},
-                            {unit: 'Tank', attack: 10, defence: 20},
-                            {unit: 'Aviation', attack: 80, defence: 40},
-                        ]
-                    },
-                    {
-                        name: 'Tank',
-                        srcImage: "tank.jpg",
-                        number: 800,
-                        manpower: 500000,
-                        weaponOnStorage: 200,
-                        maintenancePriceUnit: 10,
-                        show: false,
-                        dialog: false,
-                        peopleOnUnit: 4,
-                        modifiers: [
-                            {value: '-8%', msg: 'old guns', color: 'red'},
-                        ],
-                        srcDataInfantry: [
-                            {unit: 'Infantry', attack: 100, defence: 200},
-                            {unit: 'Artillery', attack: 30, defence: 30},
-                            {unit: 'PTO', attack: 20, defence: 5},
-                            {unit: 'PVO', attack: 10, defence: 20},
-                            {unit: 'Tank', attack: 60, defence: 45},
-                            {unit: 'Aviation', attack: 5, defence: 25},
-                        ]
-                    },
-                    {
-                        name: 'Aviation',
-                        srcImage: "aviation.jpg",
-                        number: 1500,
-                        manpower: 500000,
-                        weaponOnStorage: 230,
-                        maintenancePriceUnit: 20,
-                        show: false,
-                        dialog: false,
-                        peopleOnUnit: 3,
-                        modifiers: [
-                            {value: '+10%', msg: 'nationals region', color: 'green'},
-                            {value: '-8%', msg: 'old guns', color: 'red'},
-                        ],
-                        srcDataInfantry: [
-                            {unit: 'Infantry', attack: 40, defence: 500},
-                            {unit: 'Artillery', attack: 25, defence: 50},
-                            {unit: 'PTO', attack: 25, defence: 150},
-                            {unit: 'PVO', attack: 10, defence: 10},
-                            {unit: 'Tank', attack: 35, defence: 90},
-                            {unit: 'Aviation', attack: 100, defence: 80},
-                        ]
-                    }
-                ],
+                army:[],
             }
-        }
+        },
+        methods:
+        {
+            updateArmyPage()
+            {
+                console.log('Inside army updatePage')
+                let userId = '5fb92cde490b69cce9f464df'
+                SystemService.getView(userId,'Army').then(response => {
+                    if (response.status === 200)
+                    {
+                        console.log(response.data)
+                        console.log(response.status)
+                        response.data.forEach(element => {
+                            let armyCardView = {
+                                name: element['name'],
+                                srcImage: element['link_img'],
+                                number: element['number'],
+                                manpower: element['reserve'],
+                                weaponOnStorage: element['reserve_weapon'],
+                                maintenancePriceUnit: element['maintenance_price'],
+                                show: false,
+                                dialog: false,
+                                peopleOnUnit: element['need_peoples'],
+                                modifiers: element['modifiers'],
+                                srcDataInfantry: element['unit_characteristic']
+                            }
+                            this.army.push(armyCardView)
+                        });
+                    }
+                }).catch(error => {
+                    if (error.response) {
+                        console.log(error.response.data);
+                        console.log(error.response.status);
+                    }
+                })
+            }
+        },
+        mounted()
+        {
+            this.updateArmyPage()
+        },
     }
 </script>
 

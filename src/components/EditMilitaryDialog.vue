@@ -9,7 +9,7 @@
           <v-container>
             <v-row>
               <v-col cols="12">
-                <v-text-field label="Numbers now*" v-model="unit.number" required></v-text-field>
+                <v-text-field label="Numbers now*" v-model="numberUnits" required></v-text-field>
                 <v-card-text>Manpower: {{unit.manpower}}</v-card-text>
                 <v-card-text>On storage: {{unit.weaponOnStorage}}</v-card-text>
                 <v-card-text>1 unit = {{unit.peopleOnUnit}} people</v-card-text>
@@ -28,25 +28,52 @@
 </template>
 
 <script>
+    import GameService from "@/services/game-service"
     export default {
         name: "EditMilitaryDialog",
         props: ['unit'],
         data()
         {
             return{
+                numberUnits: 0
             }
         },
         methods:{
             cancelChanges()
             {
                 this.unit.dialog = false
-
             },
             saveChanges()
             {
                 this.unit.dialog = false
-                console.log(this.unit)
+                console.log(this.unit.name)
+                console.log(this.unit.number)
+                let userId = '5fb92cde490b69cce9f464df'
+                GameService.editArmy(userId,this.unit.name,this.numberUnits).then(response => {
+                    if (response.status === 200)
+                    {
+                        console.log(response.data)
+                        console.log(response.status)
+                        let dif = this.unit.number - this.numberUnits
+                        // BUG! need check max capacity storage!
+                        if (this.unit.manpower + (dif * this.unit.peopleOnUnit) >= 0 && this.unit.weaponOnStorage + dif >= 0 && this.numberUnits > 0)
+                        {
+                            this.unit.number = this.numberUnits
+                            this.unit.weaponOnStorage +=dif
+                            this.unit.manpower +=dif
+                        }
+                    }
+                }).catch(error => {
+                    if (error.response) {
+                        console.log(error.response.data);
+                        console.log(error.response.status);
+                    }
+                })
             }
+        },
+        mounted()
+        {
+            this.numberUnits = JSON.parse(JSON.stringify(this.unit.number)) // copy value
         }
     }
 </script>

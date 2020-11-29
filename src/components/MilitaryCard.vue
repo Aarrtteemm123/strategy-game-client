@@ -4,7 +4,7 @@
           width="500"
   >
     <v-img
-            :src="require(`../assets/army/${unit.srcImage}`)"
+            :src="require(`../assets/${unit.srcImage}`)"
             height="300px"
     ></v-img>
 
@@ -12,9 +12,11 @@
       {{unit.name}}
     </v-card-title>
     <p>Number: {{unit.number}}</p>
-    <p>Serve soldiers: {{unit.number * unit.peopleOnUnit}}</p>
-    <p>Maintenance price: {{unit.number * unit.maintenancePriceUnit}} $/day</p>
-    <p>Reserve: {{unit.weaponOnStorage}}</p>
+    <p>Solders per unit: {{unit.peopleOnUnit}}</p>
+    <p>Total serve soldiers: {{unit.number * unit.peopleOnUnit}}</p>
+    <p>Maintenance price: {{unit.maintenancePriceUnit}} $/day</p>
+    <p>Total maintenance price: {{unit.number * unit.maintenancePriceUnit}} $/day</p>
+    <p>Reserve weapon: {{unit.weaponOnStorage}}</p>
     <p>Reserve military manpower: {{unit.manpower}}</p>
 
     <v-tooltip color="white" bottom>
@@ -23,9 +25,9 @@
                 color="primary"
                 v-bind="attrs"
                 v-on="on"
-        >Modifiers</v-btn>
+        >modifiers</v-btn>
       </template>
-      <v-card-text v-for="item in unit.modifiers" v-bind:key="item" style="font-size: medium;font-weight: bolder;">
+      <v-card-text v-for="item in unit.modifiers" v-bind:key="item.id+item" style="font-size: medium;font-weight: bolder;">
         <div style="margin-top: -20px" v-bind:class="{greenText:item.color==='green',redText:item.color==='red',whiteText:item.color==='white'}">
           {{item.value}}  {{item.msg}}
         </div>
@@ -74,9 +76,9 @@
         {
             return{
                 tableHeaders: [
-                    { text: 'Type unit', align: 'start', sortable: true, value: 'unit'},
-                    { text: 'Attack', value: 'attack' },
-                    { text: 'Defence', value: 'defence' },
+                    { text: 'Type unit', align: 'start', sortable: true, value: 'unit_name'},
+                    { text: 'Attack', value: 'attack_value' },
+                    { text: 'Defence', value: 'defence_value' },
                 ],
             }
         },
