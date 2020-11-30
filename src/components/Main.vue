@@ -173,7 +173,7 @@
                         'icon-alt': 'mdi-chevron-down',
                         text: 'Country',
                         active: false,
-                        realActive:true,
+                        realActive:false, // true
                         children: [
                             {active: false, icon: 'mdi-chart-pie', text: 'Basic statistic'},
                             {active: false, icon: 'mdi-currency-usd-circle-outline', text: 'Budget'},
@@ -183,12 +183,12 @@
                             {active: false, icon: 'mdi-bank', text: 'Politics'},
                             {active: false, icon: 'mdi-human-male-female', text: 'Population'},
                             {active: false, icon: 'mdi-cart-outline', text: 'Trade'},
-                            {active: true, icon: 'mdi-ammunition', text: 'Army'},
+                            {active: false, icon: 'mdi-ammunition', text: 'Army'},
                         ],
                     },
                     {active: false, icon: 'mdi-account-circle', text: 'Account'},
                     {active: false, icon: 'mdi-account-group', text: 'Players'},
-                    {active: false, icon: 'mdi-newspaper-variant-multiple', text: 'News'},
+                    {active: true, icon: 'mdi-newspaper-variant-multiple', text: 'News'},
                     {active: false, icon: 'mdi-cog', text: 'Settings'},
                     {active: false, icon: 'mdi-message', text: 'Send feedback'},
                     {active: false, icon: 'mdi-help-circle', text: 'Help'},
