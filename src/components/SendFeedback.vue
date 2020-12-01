@@ -23,6 +23,7 @@
 </template>
 
 <script>
+    import SystemService from "@/services/system-service"
     export default {
         name: "SendFeedback",
         data()
@@ -36,6 +37,21 @@
             sendFeedback()
             {
                 console.log('sending feedback...')
+                let userId = '5fb92cde490b69cce9f464df'
+                SystemService.sendFeedback(userId,this.rating,this.text).then(response => {
+                    if (response.status === 200)
+                    {
+                        console.log(response.data)
+                        console.log(response.status)
+                        alert('Thank you for feedback!')
+                    }
+                }).catch(error => {
+                    if (error.response) {
+                        console.log(error.response.data);
+                        console.log(error.response.status);
+                        alert('Error!')
+                    }
+                })
             }
         }
     }
