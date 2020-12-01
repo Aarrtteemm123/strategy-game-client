@@ -8,6 +8,15 @@ class SystemService {
         return http.get(`/game/get_view/${userId}/${nameView}`)
     }
 
+    setSetting(userId, settingList)
+    {
+        userId = '5fb9425dd57895300fc7a8a7'
+        let data = {
+            setting_list: settingList
+        }
+        return http.put(`/game/set_setting/${userId}`,data)
+    }
+
     sendFeedback(userId,rating,msg)
     {
         userId = '5fb9425dd57895300fc7a8a7'

@@ -15,12 +15,11 @@
             <h2>System notifications</h2>
             <v-switch v-model="notifyList" @change="updateSettings" label="notify news" value="news"></v-switch>
             <v-switch v-model="notifyList" @change="updateSettings" label="notify updates" value="updates"></v-switch>
-            <v-switch v-model="notifyList" @change="updateSettings" label="notify work on server" value="work_on_server"></v-switch>
             <hr>
             <h2 style="margin-top: 10px">Game notifications</h2>
-            <v-switch v-model="notifyList" @change="updateSettings" label="notify attacks on the country" value="country_attacks"></v-switch>
-            <v-switch v-model="notifyList" @change="updateSettings" label="notify when warehouse overflow" value="warehouse_overflow"></v-switch>
-            <v-switch v-model="notifyList" @change="updateSettings" label="notify on low budget" value="low_budget"></v-switch>
+            <v-switch v-model="notifyList" @change="updateSettings" label="notify attacks on the country" value="attacks"></v-switch>
+            <v-switch v-model="notifyList" @change="updateSettings" label="notify when warehouse overflow" value="warehouse overflow"></v-switch>
+            <v-switch v-model="notifyList" @change="updateSettings" label="notify on low budget" value="low budget"></v-switch>
           </v-container>
       </v-card-text>
     </v-card>
@@ -28,18 +27,59 @@
 </template>
 
 <script>
+    import SystemService from "@/services/system-service"
     export default {
         name: "Settings",
         data(){
             return{
-                notifyList: ['updates','country_attacks'],
+                notifyList: [],
             }
         },
-        methods:{
+        methods: {
+
+            updateSettingsPage()
+            {
+                console.log('Inside settings updatePage')
+                let userId = '5fb92cde490b69cce9f464df'
+                SystemService.getView(userId,'Settings').then(response => {
+                    if (response.status === 200)
+                    {
+                        console.log(response.data)
+                        console.log(response.status)
+                        Object.entries(response.data).forEach(element => {
+                            if (element[1])
+                                this.notifyList.push(element[0])
+                        })
+                    }
+                }).catch(error => {
+                    if (error.response) {
+                        console.log(error.response.data);
+                        console.log(error.response.status);
+                    }
+                })
+            },
+
             updateSettings()
             {
                 console.log(this.notifyList)
+                let userId = '5fb92cde490b69cce9f464df'
+                SystemService.setSetting(userId,this.notifyList).then(response => {
+                    if (response.status === 200)
+                    {
+                        console.log(response.data)
+                        console.log(response.status)
+                    }
+                }).catch(error => {
+                    if (error.response) {
+                        console.log(error.response.data);
+                        console.log(error.response.status);
+                    }
+                })
             }
+        },
+        mounted()
+        {
+            this.updateSettingsPage()
         }
     }
 </script>
