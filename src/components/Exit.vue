@@ -51,7 +51,7 @@
                 // exit
                 this.dialogExit = false;
                 console.log('Exit func')
-                router.push({path: 'login'})
+                router.push({path: '/login'})
             }
         }
     }

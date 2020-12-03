@@ -104,7 +104,7 @@
             <v-btn
                     color="red darken-1"
                     text
-                    @click="isOpenDialogDeleteAccount = false"
+                    @click="cancelDeleteAccount()"
             >
               No
             </v-btn>
@@ -124,39 +124,112 @@
 </template>
 
 <script>
+    import SystemService from "@/services/system-service"
+    import UserService from "@/services/user-service"
+    import router from "@/router";
     export default {
         name: "Account",
         data()
         {
             return{
-                srcFlagImage: 'https://static.posters.cz/image/1300/%D0%A4%D0%BE%D1%82%D0%BE%D1%88%D0%BF%D0%B0%D0%BB%D0%B5%D1%80%D0%B8/flag-great-britain-uk-416x254-cm-130g/m2-vlies-non-woven-i44071.jpg',
-                nameCountry: 'Great Britain',
-                id: 'gdsk453kfd8d0fgdf0h',
-                gdp: 200000,
-                economicPlace: 1,
-                militaryPlace: 3,
-                username: 'Artem456',
-                password: 'qwerty45',
+                srcFlagImage: '',
+                nameCountry: '',
+                id: '',
+                gdp: 0,
+                economicPlace: 0,
+                militaryPlace: 0,
+                username: '',
+                password: '',
                 bufferPassword: '',
-                email: 'artem_45@gmail.com',
-                dataRegistration: '20.10.2020',
-                days: 36,
+                email: '',
+                dataRegistration: '',
+                days: 0,
                 isOpenEditDialog: false,
                 showPassword: false,
                 isOpenDialogDeleteAccount: false,
             }
         },
         methods:{
+            updateAccountPage()
+            {
+                console.log('Inside account updatePage')
+                let userId = '5fb92cde490b69cce9f464df'
+                SystemService.getView(userId,'Account').then(response => {
+                    if (response.status === 200)
+                    {
+                        console.log(response.data)
+                        console.log(response.status)
+                        this.srcFlagImage = response.data['link_img']
+                        this.nameCountry = response.data['name_country']
+                        this.id = response.data['user_id']
+                        this.gdp = response.data['total_profit_country']
+                        this.economicPlace = response.data['economic_place']
+                        this.militaryPlace = response.data['military_place']
+                        this.username = response.data['username']
+                        this.password = response.data['password']
+                        this.email = response.data['email']
+                        this.dataRegistration = response.data['date_registration']
+                        this.days = response.data['days_in_game']
+                    }
+                }).catch(error => {
+                    if (error.response) {
+                        console.log(error.response.data);
+                        console.log(error.response.status);
+                    }
+                })
+            },
             editUserData()
             {
                 // edit user data
-                this.isOpenEditDialog = false;
+                let userId = '5fb9425dd57895300fc7a8a7'
+                UserService.changeUserData(userId,this.username,this.password,
+                    this.email,this.nameCountry,this.srcFlagImage).then(response => {
+                    if (response.status === 200)
+                    {
+                        console.log(response.data)
+                        console.log(response.status)
+                        this.isOpenEditDialog = false;
+                    }
+                }).catch(error => {
+                    if (error.response) {
+                        console.log(error.response.data);
+                        console.log(error.response.status);
+                        this.isOpenEditDialog = false;
+                    }
+                })
+            },
+            cancelDeleteAccount()
+            {
+                this.bufferPassword = ''
+                this.isOpenDialogDeleteAccount = false
             },
             deleteAccount()
             {
                 // delete account
-                this.isOpenDialogDeleteAccount = false;
+                let userId = '5fb9425dd57895300fc7a8a7'
+                UserService.delete(userId,this.bufferPassword,
+                    this.email,this.nameCountry,this.srcFlagImage).then(response => {
+                    if (response.status === 200)
+                    {
+                        console.log(response.data)
+                        console.log(response.status)
+                        this.isOpenDialogDeleteAccount = false;
+                        this.bufferPassword = ''
+                        router.push({ path: `/login` })
+                    }
+                }).catch(error => {
+                    if (error.response) {
+                        console.log(error.response.data);
+                        console.log(error.response.status);
+                        this.isOpenDialogDeleteAccount = false;
+                        this.bufferPassword = ''
+                    }
+                })
             }
+        },
+        mounted()
+        {
+            this.updateAccountPage()
         }
     }
 </script>

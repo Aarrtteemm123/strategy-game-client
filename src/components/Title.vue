@@ -24,7 +24,6 @@
 <script>
     import router from "@/router";
     import UserService from '@/services/user-service'
-    //import GameService from '@/services/game-service'
 
     export default {
         name: "Title",
