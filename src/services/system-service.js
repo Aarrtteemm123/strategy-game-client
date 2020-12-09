@@ -27,6 +27,11 @@ class SystemService {
         return http.post(`/game/feedback/${userId}`,data)
     }
 
+    findPlayer(userId,namePlayer)
+    {
+        userId = '5fb9425dd57895300fc7a8a7'
+        return http.post(`/game/find/${userId}/${namePlayer}`)
+    }
 }
 
 export default new SystemService()

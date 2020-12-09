@@ -207,8 +207,7 @@
             {
                 // delete account
                 let userId = '5fb9425dd57895300fc7a8a7'
-                UserService.delete(userId,this.bufferPassword,
-                    this.email,this.nameCountry,this.srcFlagImage).then(response => {
+                UserService.delete(userId,this.bufferPassword).then(response => {
                     if (response.status === 200)
                     {
                         console.log(response.data)

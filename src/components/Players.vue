@@ -8,7 +8,7 @@
     >
       <v-card-text>
         <p class="display-1 text--primary" style="margin-top: 20px">
-          Players
+          Top players
         </p>
         <p class="text--primary" style="font-size: medium;margin-top: 20px">
           Your economic place: {{yourEconomicPlace}}
@@ -17,16 +17,20 @@
           Your military place: {{yourMilitaryPlace}}
         </p>
         <v-text-field style="margin-left: 130px;margin-top: 30px;width: 500px"
-                      label="Search" outlined rounded clearable
+                      label="Search by player name" outlined rounded clearable
+                      v-model="searchText"
         ></v-text-field>
-        <v-btn large style="width: 140px;" rounded color="primary" dark>
+        <v-btn large style="width: 140px;margin-right: 50px" @click="clearSearchResult" rounded color="error" dark>
+          Clear
+        </v-btn>
+        <v-btn large style="width: 140px;" @click="searchPlayers" rounded color="primary" dark>
           Search
         </v-btn>
       </v-card-text>
 
-      <v-data-table style="margin-bottom: 10px;margin-top: 20px"
+      <v-data-table v-if="searchPlayerList.length!==0" style="margin-bottom: 10px;margin-top: 20px"
                     :headers="headers"
-                    :items="resultSearchPlayers"
+                    :items="searchPlayerList"
                     fixed-heade
                     hide-default-footer
                     disable-pagination
@@ -34,7 +38,32 @@
       >
         <template v-slot:item.srcImage="{ item }">
           <v-avatar size="35">
-            <v-img :src="require(`../assets/${item.srcImage}`)" :alt="item.nameCountry"></v-img>
+            <v-img :src=item.srcImage :alt="item.nameCountry"></v-img>
+          </v-avatar>
+        </template>
+        <template v-slot:item.showStatistic="{ item }">
+          <v-btn @click="showStatistic(item)" small rounded color="primary" dark>
+            Show detail
+          </v-btn>
+        </template>
+        <template v-slot:item.attack="{ item }">
+          <v-btn @click="openAttackDialog(item)" small rounded color="error" dark>
+            Attack
+          </v-btn>
+        </template>
+      </v-data-table>
+
+      <v-data-table style="margin-bottom: 10px;margin-top: 70px"
+                    :headers="headers"
+                    :items="topPlayers"
+                    fixed-heade
+                    hide-default-footer
+                    disable-pagination
+                    class="elevation-1"
+      >
+        <template v-slot:item.srcImage="{ item }">
+          <v-avatar size="35">
+            <v-img :src=item.srcImage :alt="item.nameCountry"></v-img>
           </v-avatar>
         </template>
         <template v-slot:item.showStatistic="{ item }">
@@ -55,6 +84,16 @@
       <v-dialog v-model="flShowStatisticDialog" persistent max-width="600px">
         <v-card>
           <v-card-title>
+            <v-avatar
+                    size="40px"
+                    style="margin-right: 20px"
+                    item
+            >
+              <v-img
+                      :src=selectedPlayer.srcImage
+                      alt="Vuetify"
+              ></v-img>
+            </v-avatar>
             <span class="headline">{{selectedPlayer.namePlayer}} {{selectedPlayer.nameCountry}}</span>
           </v-card-title>
           <v-card-text>
@@ -81,7 +120,7 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn style="margin-top: -40px" color="blue darken-1" text @click="closeShowStatisticDialog">Close</v-btn>
+            <v-btn style="margin-top: -40px" color="blue darken-1" text @click="closeStatisticDialog">Close</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -106,7 +145,7 @@
             <v-btn
                     color="blue darken-1"
                     text
-                    @click="flAttackDialog = false"
+                    @click="cancelAttack()"
             >
               No,we aren't ready
             </v-btn>
@@ -133,12 +172,12 @@
 
           <v-card-text>
             <h2 style="margin-top: 10px;margin-bottom: 20px">Losses:</h2>
-            <div v-for="item in resultAttack.losses" v-bind:key="item">
+            <div v-for="item in resultAttack.losses" v-bind:key="item.id+item">
               <p style="color: red">{{item.name}} - {{item.number}}</p>
             </div>
 
             <h2 style="margin-top: 10px;margin-bottom: 20px">Prey:</h2>
-            <div v-for="item in resultAttack.prey" v-bind:key="item">
+            <div v-for="item in resultAttack.prey" v-bind:key="item.id+item">
               <p style="color: green">{{item.name}} - {{item.number}}</p>
             </div>
           </v-card-text>
@@ -149,7 +188,7 @@
             <v-btn
                     color="blue darken-1"
                     text
-                    @click="flShowResultAttackDialog = false"
+                    @click="closeAttackResultDialog"
             >
               peace
             </v-btn>
@@ -163,6 +202,8 @@
 </template>
 
 <script>
+    import SystemService from "@/services/system-service"
+    import GameService from "@/services/game-service"
     export default {
         name: "Players",
         data()
@@ -172,15 +213,14 @@
                 flShowStatisticDialog: false,
                 flShowResultAttackDialog: false,
                 selectedPlayer: {},
-                yourEconomicPlace: 23,
-                yourMilitaryPlace: 15,
+                searchPlayerList: [],
+                searchText: '',
+
+                yourEconomicPlace: 0,
+                yourMilitaryPlace: 0,
+
                 resultAttack: {},
-                resultSearchPlayers:[
-                    {id:1,srcImage:'logo.png',nameCountry:'Poland',namePlayer:'Max1',economicPlace:1,militaryPlace:1,budget:1000000,farms:10,mines:50,factories:14,population:5000000,solders:20000,infantry:8000,artillery:5000,pto:12,pvo:5000,tanks:1000,aviation:40},
-                    {id:2,srcImage:'logo.png',nameCountry:'Poland2',namePlayer:'Max2',economicPlace:1,militaryPlace:1,budget:1000000,farms:10,mines:50,factories:14,population:5000000,solders:30000,infantry:1000,artillery:5000,pto:1200,pvo:500,tanks:10,aviation:42},
-                    {id:3,srcImage:'logo.png',nameCountry:'Poland3',namePlayer:'Max3',economicPlace:1,militaryPlace:1,budget:1000000,farms:10,mines:50,factories:14,population:5000000,solders:40000,infantry:10000,artillery:100,pto:20,pvo:50,tanks:13,aviation:2},
-                    {id:4,srcImage:'logo.png',nameCountry:'Poland4',namePlayer:'Max4',economicPlace:1,militaryPlace:1,budget:1000000,farms:10,mines:50,factories:14,population:5000000,solders:50000,infantry:20000,artillery:1000,pto:12,pvo:5,tanks:5,aviation:600},
-                ],
+                topPlayers:[],
                 headers: [
                     { text: 'ID', align: 'start', sortable: true, value: 'id'},
                     { text: 'Flag', value: 'srcImage' },
@@ -194,6 +234,66 @@
             }
         },
         methods:{
+            closeAttackResultDialog()
+            {
+                this.flShowResultAttackDialog = false
+                this.resultAttack = {}
+            },
+            searchPlayers()
+            {
+                if (this.searchText != null)
+                {
+                    console.log('Inside account updatePage')
+                    let userId = '5fb92cde490b69cce9f464df'
+                    SystemService.findPlayer(userId,this.searchText).then(response => {
+                        if (response.status === 200) {
+                            console.log(response.data)
+                            console.log(response.status)
+                            this.searchPlayerList = []
+                            let index = 1
+                            response.data.forEach(element => {
+                                let playerView = {
+                                    id: index,
+                                    srcImage: element['link_country_flag'],
+                                    nameCountry: element['name_country'],
+                                    namePlayer: element['username'],
+                                    economicPlace: element['economic_place'],
+                                    militaryPlace: element['military_place'],
+                                    budget: element['money'],
+                                    farms: element['farms'],
+                                    mines: element['mines'],
+                                    factories: element['factories'],
+                                    population: element['population'],
+                                    solders: element['solders'],
+                                    infantry: element['army_units_dict']['Infantry'],
+                                    artillery: element['army_units_dict']['Artillery'],
+                                    pto: element['army_units_dict']['PTO'],
+                                    pvo: element['army_units_dict']['PVO'],
+                                    tanks: element['army_units_dict']['Tank'],
+                                    aviation: element['army_units_dict']['Aviation'],
+                                }
+                                this.searchPlayerList.push(playerView)
+                                index++
+                            })
+                        }
+                    }).catch(error => {
+                        if (error.response) {
+                            console.log(error.response.data);
+                            console.log(error.response.status);
+                        }
+                    })
+                }
+                else
+                {
+                    this.searchText = null
+                    this.searchPlayerList = []
+                }
+            },
+            clearSearchResult()
+            {
+                this.searchText = null
+                this.searchPlayerList = []
+            },
             showStatistic(item)
             {
                 console.log(item)
@@ -206,7 +306,12 @@
                 this.flAttackDialog = true
                 this.selectedPlayer = item
             },
-            closeShowStatisticDialog()
+            cancelAttack()
+            {
+                this.flAttackDialog = false
+                this.selectedPlayer = {}
+            },
+            closeStatisticDialog()
             {
                 this.flShowStatisticDialog = false
             },
@@ -215,21 +320,68 @@
                 // attack player
                 this.flAttackDialog = false
                 console.log('attack player')
-                this.resultAttack = {
-                    losses:[
-                        {name:'infantry',number:10000},
-                        {name:'tanks',number:100},
-                    ],
-                    prey:[
-                        {name:'bakery',number:1000},
-                        {name:'jewelry',number:500},
-                        {name:'solar panel',number:10000},
-                        {name:'glass',number:10},
-                        {name:'aviation',number:120},
-                    ]
-                }
+                let userId = '5fb92cde490b69cce9f464df'
+                GameService.calculateWar(userId,this.selectedPlayer.namePlayer).then(response => {
+                    if (response.status === 200) {
+                        console.log(response.data)
+                        console.log(response.status)
+                        this.resultAttack = response.data
+                    }
+                }).catch(error => {
+                    if (error.response) {
+                        console.log(error.response.data);
+                        console.log(error.response.status);
+                    }
+                })
                 this.flShowResultAttackDialog = true
+            },
+            updateTopPlayersPage()
+            {
+                let userId = '5fb92cde490b69cce9f464df'
+                SystemService.getView(userId,'TopPlayers').then(response => {
+                    if (response.status === 200)
+                    {
+                        console.log(response.data)
+                        console.log(response.status)
+                        this.yourEconomicPlace = response.data['economic_place']
+                        this.yourMilitaryPlace = response.data['military_place']
+                        let index = 1
+                        response.data['top_players'].forEach(element => {
+                            let playerView = {
+                                id: index,
+                                srcImage: element['link_country_flag'],
+                                nameCountry: element['name_country'],
+                                namePlayer: element['username'],
+                                economicPlace: element['economic_place'],
+                                militaryPlace: element['military_place'],
+                                budget: element['money'],
+                                farms: element['farms'],
+                                mines: element['mines'],
+                                factories: element['factories'],
+                                population: element['population'],
+                                solders: element['solders'],
+                                infantry: element['army_units_dict']['Infantry'],
+                                artillery: element['army_units_dict']['Artillery'],
+                                pto: element['army_units_dict']['PTO'],
+                                pvo: element['army_units_dict']['PVO'],
+                                tanks: element['army_units_dict']['Tank'],
+                                aviation: element['army_units_dict']['Aviation'],
+                            }
+                            this.topPlayers.push(playerView)
+                            index++
+                        })
+                    }
+                }).catch(error => {
+                    if (error.response) {
+                        console.log(error.response.data);
+                        console.log(error.response.status);
+                    }
+                })
             }
+        },
+        mounted()
+        {
+            this.updateTopPlayersPage()
         }
     }
 </script>
