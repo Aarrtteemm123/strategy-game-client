@@ -77,7 +77,7 @@
           <span class="hidden-sm-and-down">Online strategy - YOUR COUNTRY</span>
         </v-toolbar-title>
         <v-spacer></v-spacer>
-        <v-btn @click="items[7].active = true" style="margin-right: 15px"
+        <v-btn @click="items[8].active = true" style="margin-right: 15px"
                icon
                large
         >
@@ -172,7 +172,7 @@
                         icon: 'mdi-chevron-up',
                         'icon-alt': 'mdi-chevron-down',
                         text: 'Country',
-                        active: false,
+                        active: false, // only false
                         realActive:false, // true
                         children: [
                             {active: false, icon: 'mdi-chart-pie', text: 'Basic statistic'},
@@ -187,11 +187,11 @@
                         ],
                     },
                     {active: false, icon: 'mdi-account-circle', text: 'Account'},
-                    {active: true, icon: 'mdi-account-group', text: 'Players'},
+                    {active: false, icon: 'mdi-account-group', text: 'Players'},
                     {active: false, icon: 'mdi-newspaper-variant-multiple', text: 'News'},
                     {active: false, icon: 'mdi-cog', text: 'Settings'},
                     {active: false, icon: 'mdi-message', text: 'Send feedback'},
-                    {active: false, icon: 'mdi-help-circle', text: 'Help'},
+                    {active: true, icon: 'mdi-help-circle', text: 'Help'},
                     {active: false, icon: 'mdi-briefcase', text: 'About project'},
                     {active: false, icon: 'mdi-exit-to-app', text: 'Exit'},
                 ],
