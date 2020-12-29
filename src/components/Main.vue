@@ -173,9 +173,9 @@
                         'icon-alt': 'mdi-chevron-down',
                         text: 'Country',
                         active: false, // only false
-                        realActive:false, // true
+                        realActive:true, // true
                         children: [
-                            {active: false, icon: 'mdi-chart-pie', text: 'Basic statistic'},
+                            {active: true, icon: 'mdi-chart-pie', text: 'Basic statistic'},
                             {active: false, icon: 'mdi-currency-usd-circle-outline', text: 'Budget'},
                             {active: false, icon: 'mdi-atom', text: 'Technology'},
                             {active: false, icon: 'mdi-factory', text: 'Industry'},
@@ -191,7 +191,7 @@
                     {active: false, icon: 'mdi-newspaper-variant-multiple', text: 'News'},
                     {active: false, icon: 'mdi-cog', text: 'Settings'},
                     {active: false, icon: 'mdi-message', text: 'Send feedback'},
-                    {active: true, icon: 'mdi-help-circle', text: 'Help'},
+                    {active: false, icon: 'mdi-help-circle', text: 'Help'},
                     {active: false, icon: 'mdi-briefcase', text: 'About project'},
                     {active: false, icon: 'mdi-exit-to-app', text: 'Exit'},
                 ],

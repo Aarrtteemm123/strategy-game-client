@@ -8,6 +8,7 @@
           <p>Workers: {{workers}}</p>
           <p>Miners: {{miners}}</p>
           <p>Farmers: {{farmers}}</p>
+          <p>Free: {{free}}</p>
           <p>Others: {{others}}</p>
           <div style="margin-bottom: 12px">Solders: {{solders}}</div>
           <hr>
@@ -46,6 +47,7 @@
                 miners: 0,
                 farmers: 0,
                 others: 0,
+                free: 0,
                 totalProgress: 0,
                 modifiers: [],
                 series: [],
@@ -70,6 +72,7 @@
                         this.miners = response.data['miners']
                         this.farmers = response.data['farmers']
                         this.others = response.data['others']
+                        this.free = response.data['free']
                         this.totalProgress = response.data['percent_total_progress']
                         this.modifiers = response.data['modifiers']
                         this.series = response.data['pie_chart_data']

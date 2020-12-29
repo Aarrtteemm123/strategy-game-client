@@ -26,6 +26,7 @@ class UserService {
 
     changeUserData(userId,username,password,email,countryName,linkOnFlag)
     {
+        userId = '5fe23834c34647d8fb3b9a99'
         let data = {
             username : username,
             password : password,
@@ -37,6 +38,7 @@ class UserService {
 
     delete(userId,password)
     {
+        userId = '5fe23834c34647d8fb3b9a99'
         return http.delete(`/game/delete_account/${userId}/${password}`)
     }
 }

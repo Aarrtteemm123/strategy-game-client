@@ -46,6 +46,7 @@
                                 number: element['number'],
                                 manpower: element['reserve'],
                                 weaponOnStorage: element['reserve_weapon'],
+                                storageCapacity: element['storage_capacity'],
                                 maintenancePriceUnit: element['maintenance_price'],
                                 show: false,
                                 dialog: false,

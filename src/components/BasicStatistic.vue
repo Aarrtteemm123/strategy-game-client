@@ -28,6 +28,8 @@
         </div>
       </v-card-text>
 
+      <apexchart style="margin-left:30px;margin-top: 60px;margin-bottom: 20px;" type="area" width="720" height="350" :options="budgetChartOptions" :series="budgetData"></apexchart>
+
       <apexchart style="margin-left:30px;margin-top: 60px;margin-bottom: 20px;" type="area" width="720" height="350" :options="profitAndExpensesChartOptions" :series="profitAndExpensesData"></apexchart>
 
       <apexchart style="margin-left:30px;margin-top: 60px;margin-bottom: 20px;" type="bar" width="720" height="350" :options="populationChartOptions" :series="populationData"></apexchart>
@@ -202,8 +204,8 @@
                     }
                 },
 
-                profitAndExpensesData: [],
-                profitAndExpensesChartOptions: {
+                budgetData: [],
+                budgetChartOptions: {
                     chart: {
                         height: 350,
                         type: 'area'
@@ -227,8 +229,41 @@
                         categories: []
                     },
                     yaxis: {
-                        type: 'number',
-                        max: 0,
+                        type: 'number'
+                    },
+                    tooltip: {
+                        x: {
+                            format: 'HH:mm yy/MM/dd'
+                        },
+                    },
+                },
+
+                profitAndExpensesData: [],
+                profitAndExpensesChartOptions: {
+                    chart: {
+                        height: 350,
+                        type: 'area'
+                    },
+                    title: {
+                        text: 'Profit and expenses',
+                        align: 'left',
+                        style: {
+                            fontSize: "16px",
+                            color: '#666'
+                        }
+                    },
+                    dataLabels: {
+                        enabled: false
+                    },
+                    stroke: {
+                        curve: 'smooth'
+                    },
+                    xaxis: {
+                        type: 'datetime',
+                        categories: []
+                    },
+                    yaxis: {
+                        type: 'number'
                     },
                     tooltip: {
                         x: {
@@ -487,6 +522,45 @@
                           }
                         }
 
+                        this.budgetData = [
+                            {
+                                name: 'budget',
+                                data: response.data['chart_money']['data']
+                            }
+                        ]
+                        this.budgetChartOptions = {
+                        chart: {
+                            height: 350,
+                                type: 'area'
+                        },
+                        title: {
+                            text: 'Budget',
+                                align: 'left',
+                                style: {
+                                fontSize: "16px",
+                                    color: '#666'
+                            }
+                        },
+                        dataLabels: {
+                            enabled: false
+                        },
+                        stroke: {
+                            curve: 'smooth'
+                        },
+                        xaxis: {
+                            type: 'datetime',
+                                categories: response.data['chart_money']['x_axis_label']
+                        },
+                        yaxis: {
+                            type: 'number'
+                        },
+                        tooltip: {
+                            x: {
+                                format: 'HH:mm yy/MM/dd'
+                            },
+                        },
+                        }
+
                         this.profitAndExpensesData = [{
                             name: 'profit',
                             data: response.data['chart_budget']['profit_data']
@@ -500,7 +574,7 @@
                                 type: 'area'
                         },
                         title: {
-                            text: 'Budget',
+                            text: 'Profit and expenses',
                                 align: 'left',
                                 style: {
                                 fontSize: "16px",
@@ -515,11 +589,11 @@
                         },
                         xaxis: {
                             type: 'datetime',
-                                categories: response.data['chart_budget']['x_axis_label']
+                            categories: response.data['chart_budget']['x_axis_label']
                         },
                         yaxis: {
                             type: 'number',
-                                max: response.data['chart_budget']['y_axis_max'],
+                            max: response.data['chart_budget']['y_axis_max'],
                         },
                         tooltip: {
                             x: {
@@ -550,12 +624,8 @@
                                 colors: {
                                     ranges: [{
                                         from: -100,
-                                        to: -50,
+                                        to: 0,
                                         color: '#F15B46'
-                                    }, {
-                                        from: -49,
-                                        to: -6,
-                                        color: '#FEB019'
                                     }
                                     ]
                                 },

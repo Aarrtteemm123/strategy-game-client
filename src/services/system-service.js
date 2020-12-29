@@ -4,13 +4,13 @@ class SystemService {
 
     getView(userId,nameView)
     {
-        userId = '5fb9425dd57895300fc7a8a7'
+        userId = '5fe23834c34647d8fb3b9a99'
         return http.get(`/game/get_view/${userId}/${nameView}`)
     }
 
     setSetting(userId, settingList)
     {
-        userId = '5fb9425dd57895300fc7a8a7'
+        userId = '5fe23834c34647d8fb3b9a99'
         let data = {
             setting_list: settingList
         }
@@ -19,7 +19,7 @@ class SystemService {
 
     sendFeedback(userId,rating,msg)
     {
-        userId = '5fb9425dd57895300fc7a8a7'
+        userId = '5fe23834c34647d8fb3b9a99'
         let data = {
             rating:rating,
             msg:msg,
@@ -29,7 +29,7 @@ class SystemService {
 
     findPlayer(userId,namePlayer)
     {
-        userId = '5fb9425dd57895300fc7a8a7'
+        userId = '5fe23834c34647d8fb3b9a99'
         return http.post(`/game/find/${userId}/${namePlayer}`)
     }
 }

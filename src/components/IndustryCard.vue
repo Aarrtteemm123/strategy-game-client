@@ -13,6 +13,7 @@
       <div style="margin-top: 15px">Price build: +{{factory.price_build}}$</div>
       <div style="margin-top: 15px">Need workers: {{factory.workers}}</div>
       <div style="margin-top: 15px">Number: {{factory.number}}</div>
+      <div style="margin-top: 15px">Active: {{factory.active_number}}</div>
       <div style="margin-top: 15px">Total workers: {{factory.total_workers}}</div>
       <div v-if="Object.keys(factory.need_goods).length !==0" style="margin-top: 15px" class="text-center">Need goods</div>
 

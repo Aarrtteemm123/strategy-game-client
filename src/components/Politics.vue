@@ -90,7 +90,7 @@
                             {value: '-5%', to:'attack army', from: 'conscripts law', color: 'red'},
                             {value: '-5%', to:'defence army', from: 'conscripts law', color: 'red'},
                         ]},
-                    {value:'25%',name:'All with weapons', modifiers:[
+                    {value:'30%',name:'All with weapons', modifiers:[
                             {value: '-15%', to:'population', from: 'conscripts law', color: 'red'},
                             {value: '-35%', to:'industry', from: 'conscripts law', color: 'red'},
                             {value: '-15%', to:'attack army', from: 'conscripts law', color: 'red'},
