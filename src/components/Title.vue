@@ -1,8 +1,9 @@
 <template>
   <div id="title">
     <v-app>
-      <h1 style="margin-top: 70px;margin-bottom: 70px">Welcome to title page</h1>
-      <v-container style="width: 500px;height: 500px">
+      <AnalogClock style="padding-left: 710px;padding-top: 120px" v-bind:tick="tick"></AnalogClock>
+      <h1 style="margin-top: -580px;margin-bottom: 50px">Welcome to our game</h1>
+      <v-container style="width: 500px;height: 500px;">
         <v-text-field v-model="username" style="margin-bottom: 20px"
                       label="Username" outlined rounded clearable
         ></v-text-field>
@@ -23,18 +24,32 @@
 
 <script>
     import router from "@/router";
-    import UserService from '@/services/user-service'
+    import UserService from '@/services/user-service';
+    import AnalogClock from "@/components/AnalogClock";
 
     export default {
         name: "Title",
+        components: {AnalogClock},
         data()
         {
           return{
               username:'',
-              password:''
+              password:'',
+              tick: 0,
+              time: { hours: 0, minutes: 0, seconds: 0 }
           }
         },
         methods: {
+            updateTime(time) {
+                this.tick++
+                this.time = {
+                    hours: time.getHours(),
+                    minutes: time.getMinutes(),
+                    seconds: time.getSeconds()
+                }
+
+                setTimeout(() => this.updateTime(new Date()), 1000 - new Date().getMilliseconds())
+            },
             clkBtnRegister() {
                 router.push({path: 'register'})
             },
@@ -55,6 +70,9 @@
                     }
                 })
             }
+        },
+        mounted() {
+            this.updateTime(new Date())
         }
     }
 </script>
