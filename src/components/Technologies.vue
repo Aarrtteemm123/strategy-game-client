@@ -30,6 +30,19 @@
         ></v-progress-linear>
       </v-card-text>
     </v-card>
+    <v-snackbar v-if="snackbarVisible"
+                v-model="snackbarVisible"
+                timeout="5000"
+    >
+      {{error}}
+      <v-btn
+              color="blue"
+              text
+              @click="closeSnackbar"
+      >
+        Close
+      </v-btn>
+    </v-snackbar>
   </v-app>
 </template>
 
@@ -42,9 +55,16 @@
         {
             return{
                 technologyLst:[],
+                snackbarVisible: false,
+                error: '',
             }
         },
         methods:{
+            closeSnackbar()
+            {
+                this.snackbarVisible = false
+                this.error = ''
+            },
             updatePage()
             {
                 let userId = '5f4814cc59e648f9cfba7e09'
@@ -58,6 +78,8 @@
                     }
                 }).catch(error => {
                     if (error.response) {
+                        this.snackbarVisible = true;
+                        this.error = error.response.data
                         console.log(error.response.data);
                         console.log(error.response.status);
                     }
@@ -76,6 +98,8 @@
                     }
                 }).catch(error => {
                     if (error.response) {
+                        this.snackbarVisible = true;
+                        this.error = error.response.data
                         console.log(error.response.data);
                         console.log(error.response.status);
                     }

@@ -31,7 +31,7 @@
           <v-btn
                   color="blue darken-1"
                   text
-                  @click="[closeSellDialog(),sell(goods.name,numberSelling)]"
+                  @click="sell(goods.name,numberSelling)"
           >
             Confirm
           </v-btn>
@@ -69,9 +69,12 @@
                         console.log(response.status)
                         if (this.goods.have - Number(this.numberSelling) >= 0 && Number(this.numberSelling) > 0)
                             this.goods.have -= Number(this.numberSelling)
+                        this.closeSellDialog()
                     }
                 }).catch(error => {
                     if (error.response) {
+                        this.$emit('get-error', error.response.data)
+                        this.closeSellDialog()
                         console.log(error.response.data);
                         console.log(error.response.status);
                     }

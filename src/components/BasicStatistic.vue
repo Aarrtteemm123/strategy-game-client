@@ -84,19 +84,33 @@
           </v-card>
         </v-tab-item>
       </v-tabs-items>
-
     </v-card>
+    <v-snackbar v-if="snackbarVisible"
+                v-model="snackbarVisible"
+                timeout="5000"
+    >
+      {{error}}
+      <v-btn
+              color="blue"
+              text
+              @click="closeSnackbar"
+      >
+        Close
+      </v-btn>
+    </v-snackbar>
   </v-app>
 </template>
 
 <script>
-    //import GameService from "@/services/game-service"
     import SystemService from "@/services/system-service"
     export default {
         name: "BasicStatistic",
         data()
         {
             return{
+                snackbarVisible: false,
+                error: '',
+
                 srcFlagImage: '',
                 nameCountry: '',
                 population: 0,
@@ -401,6 +415,11 @@
         },
         methods:
         {
+            closeSnackbar()
+            {
+                this.snackbarVisible = false
+                this.error = ''
+            },
             updatePage()
             {
                 let userId = '5f4814cc59e648f9cfba7e09'
@@ -715,11 +734,13 @@
                                     }
                                 }
                             }
-                        }
+                          }
                         }
                     }
                 }).catch(error => {
                     if (error.response) {
+                        this.snackbarVisible = true;
+                        this.error = error.response.data
                         console.log(error.response.data);
                         console.log(error.response.status);
                     }

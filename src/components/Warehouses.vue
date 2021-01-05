@@ -75,7 +75,19 @@
         <WarehouseCard style="margin-bottom: 30px" v-on:update-page="updateWarehousePage" v-if="activeBtn===3" v-bind:warehouse="item"></WarehouseCard>
       </v-col>
     </v-row>
-
+    <v-snackbar v-if="snackbarVisible"
+                v-model="snackbarVisible"
+                timeout="5000"
+    >
+      {{error}}
+      <v-btn
+              color="blue"
+              text
+              @click="closeSnackbar"
+      >
+        Close
+      </v-btn>
+    </v-snackbar>
   </v-app>
 </template>
 
@@ -89,6 +101,8 @@
         data()
         {
             return{
+                snackbarVisible: false,
+                error: '',
                 activeBtn: 0,
                 foodsWarehouses:[],
                 mineralsWarehouses:[],
@@ -98,6 +112,11 @@
         },
         methods:
             {
+                closeSnackbar()
+                {
+                    this.snackbarVisible = false
+                    this.error = ''
+                },
                 updateWarehousePage()
                 {
                     console.log('Inside warehouse updatePage')
@@ -114,6 +133,8 @@
                         }
                     }).catch(error => {
                         if (error.response) {
+                            this.snackbarVisible = true
+                            this.error = error.response.data
                             console.log(error.response.data);
                             console.log(error.response.status);
                         }

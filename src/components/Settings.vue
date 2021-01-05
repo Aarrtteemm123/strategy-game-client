@@ -23,6 +23,19 @@
           </v-container>
       </v-card-text>
     </v-card>
+    <v-snackbar v-if="snackbarVisible"
+                v-model="snackbarVisible"
+                timeout="5000"
+    >
+      {{error}}
+      <v-btn
+              color="blue"
+              text
+              @click="closeSnackbar"
+      >
+        Close
+      </v-btn>
+    </v-snackbar>
   </v-app>
 </template>
 
@@ -32,10 +45,17 @@
         name: "Settings",
         data(){
             return{
+                snackbarVisible: false,
+                error: '',
                 notifyList: [],
             }
         },
         methods: {
+            closeSnackbar()
+            {
+                this.snackbarVisible = false
+                this.error = ''
+            },
 
             updateSettingsPage()
             {
@@ -53,6 +73,8 @@
                     }
                 }).catch(error => {
                     if (error.response) {
+                        this.snackbarVisible = true;
+                        this.error = error.response.data
                         console.log(error.response.data);
                         console.log(error.response.status);
                     }
@@ -71,6 +93,8 @@
                     }
                 }).catch(error => {
                     if (error.response) {
+                        this.snackbarVisible = true;
+                        this.error = error.response.data
                         console.log(error.response.data);
                         console.log(error.response.status);
                     }

@@ -24,6 +24,19 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <v-snackbar v-if="snackbarVisible"
+                v-model="snackbarVisible"
+                timeout="5000"
+    >
+      {{error}}
+      <v-btn
+              color="blue"
+              text
+              @click="closeSnackbar"
+      >
+        Close
+      </v-btn>
+    </v-snackbar>
   </v-row>
 </template>
 
@@ -35,10 +48,17 @@
         data()
         {
             return{
+                snackbarVisible: false,
+                error: '',
                 numberUnits: 0
             }
         },
         methods:{
+            closeSnackbar()
+            {
+                this.snackbarVisible = false
+                this.error = ''
+            },
             cancelChanges()
             {
                 this.unit.dialog = false
@@ -67,6 +87,8 @@
                     }
                 }).catch(error => {
                     if (error.response) {
+                        this.snackbarVisible = true;
+                        this.error = error.response.data
                         console.log(error.response.data);
                         console.log(error.response.status);
                     }

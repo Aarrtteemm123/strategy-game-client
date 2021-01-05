@@ -120,6 +120,19 @@
         </v-card>
       </v-dialog>
     </v-row>
+    <v-snackbar v-if="snackbarVisible"
+                v-model="snackbarVisible"
+                timeout="5000"
+    >
+      {{error}}
+      <v-btn
+              color="blue"
+              text
+              @click="closeSnackbar"
+      >
+        Close
+      </v-btn>
+    </v-snackbar>
   </v-app>
 </template>
 
@@ -132,6 +145,9 @@
         data()
         {
             return{
+                snackbarVisible: false,
+                error: '',
+
                 srcFlagImage: '',
                 nameCountry: '',
                 id: '',
@@ -150,6 +166,11 @@
             }
         },
         methods:{
+            closeSnackbar()
+            {
+                this.snackbarVisible = false
+                this.error = ''
+            },
             updateAccountPage()
             {
                 console.log('Inside account updatePage')
@@ -173,6 +194,8 @@
                     }
                 }).catch(error => {
                     if (error.response) {
+                        this.snackbarVisible = true;
+                        this.error = error.response.data
                         console.log(error.response.data);
                         console.log(error.response.status);
                     }
@@ -192,6 +215,8 @@
                     }
                 }).catch(error => {
                     if (error.response) {
+                        this.snackbarVisible = true;
+                        this.error = error.response.data
                         console.log(error.response.data);
                         console.log(error.response.status);
                         this.isOpenEditDialog = false;
@@ -218,6 +243,8 @@
                     }
                 }).catch(error => {
                     if (error.response) {
+                        this.snackbarVisible = true;
+                        this.error = error.response.data
                         console.log(error.response.data);
                         console.log(error.response.status);
                         this.isOpenDialogDeleteAccount = false;

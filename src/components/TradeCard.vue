@@ -33,8 +33,22 @@
       </v-card-text>
     </v-card>
 
-    <BuyDialog v-if="tradeCartData.goods.flagBuy" v-bind:goods="tradeCartData.goods"></BuyDialog>
-    <SellDialog v-if="tradeCartData.goods.flagSell" v-bind:goods="tradeCartData.goods"></SellDialog>
+    <BuyDialog @get-error="showSnackbar"  v-if="tradeCartData.goods.flagBuy" v-bind:goods="tradeCartData.goods"></BuyDialog>
+    <SellDialog @get-error="showSnackbar" v-if="tradeCartData.goods.flagSell" v-bind:goods="tradeCartData.goods"></SellDialog>
+
+    <v-snackbar v-if="snackbarVisible"
+                v-model="snackbarVisible"
+                timeout="5000"
+    >
+      {{error}}
+      <v-btn
+              color="blue"
+              text
+              @click="closeSnackbar"
+      >
+        Close
+      </v-btn>
+    </v-snackbar>
   </v-app>
 </template>
 
@@ -49,8 +63,22 @@
         data()
         {
             return{
-
+                snackbarVisible: false,
+                error: '',
             }
+        },
+        methods:
+        {
+            showSnackbar(error)
+            {
+                this.snackbarVisible = true
+                this.error = error
+            },
+            closeSnackbar()
+            {
+                this.snackbarVisible = false
+                this.error = ''
+            },
         },
         computed: {
             ...mapGetters(["srcData"])

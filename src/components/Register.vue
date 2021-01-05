@@ -40,6 +40,19 @@
               Close
             </v-btn>
           </v-snackbar>
+          <v-snackbar v-if="snackbarErrorVisible"
+                      v-model="snackbarErrorVisible"
+                      timeout="5000"
+          >
+            {{error}}
+            <v-btn
+                    color="blue"
+                    text
+                    @click="closeErrorSnackbar"
+            >
+              Close
+            </v-btn>
+          </v-snackbar>
         </div>
       </v-container>
     </v-app>
@@ -56,6 +69,8 @@
         data()
         {
             return{
+                snackbarErrorVisible: false,
+                error: '',
                 username:'',
                 password:'',
                 email:'',
@@ -66,6 +81,11 @@
             }
         },
         methods: {
+            closeErrorSnackbar()
+            {
+                this.snackbarErrorVisible = false
+                this.error = ''
+            },
             clkBtnRegister() {
                 // register user
                 UserService.register(this.username,this.password,this.email,
@@ -79,10 +99,8 @@
                     }
                 }).catch(error => {
                     if (error.response) {
-                        if (error.response.status === 400)
-                        {
-                            alert('Try change your data')
-                        }
+                        this.snackbarErrorVisible = true;
+                        this.error = error.response.data
                         console.log(error.response.data);
                         console.log(error.response.status);
                     }

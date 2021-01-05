@@ -37,6 +37,19 @@
       <v-btn style="margin-top: 20px; width: 100px" v-on:click="removeIndustry(factory.name)" color="error">Remove</v-btn>
       <v-btn style="margin-left: 138px;margin-top: 20px;width: 100px" v-on:click="buildIndustry(factory.name)" medium color="primary">Build</v-btn>
     </v-card-text>
+    <v-snackbar v-if="snackbarVisible"
+                v-model="snackbarVisible"
+                timeout="5000"
+    >
+      {{error}}
+      <v-btn
+              color="blue"
+              text
+              @click="closeSnackbar"
+      >
+        Close
+      </v-btn>
+    </v-snackbar>
   </v-card>
 </template>
 
@@ -48,6 +61,8 @@
         data()
         {
             return{
+                snackbarVisible: false,
+                error: '',
                 headers: [
                     { text: 'ID', align: 'start', sortable: true, value: 'id'},
                     { text: 'Icon', value: 'link_img' },
@@ -58,6 +73,11 @@
         },
         methods:
         {
+            closeSnackbar()
+            {
+                this.snackbarVisible = false
+                this.error = ''
+            },
             buildIndustry(name)
             {
                 let userId = '5fb92cde490b69cce9f464df'
@@ -70,6 +90,8 @@
                     }
                 }).catch(error => {
                     if (error.response) {
+                        this.snackbarVisible = true
+                        this.error = error.response.data
                         console.log(error.response.data);
                         console.log(error.response.status);
                     }
@@ -89,6 +111,8 @@
                     }
                 }).catch(error => {
                     if (error.response) {
+                        this.snackbarVisible = true
+                        this.error = error.response.data
                         console.log(error.response.data);
                         console.log(error.response.status);
                     }

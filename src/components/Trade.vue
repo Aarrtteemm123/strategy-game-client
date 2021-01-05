@@ -71,7 +71,19 @@
         <TradeCard v-if="activeBtn===3" style="margin-bottom: 30px;margin-left: 30px" v-bind:tradeCartData=item></TradeCard>
       </v-col>
     </v-row>
-
+    <v-snackbar v-if="snackbarVisible"
+                v-model="snackbarVisible"
+                timeout="5000"
+    >
+      {{error}}
+      <v-btn
+              color="blue"
+              text
+              @click="closeSnackbar"
+      >
+        Close
+      </v-btn>
+    </v-snackbar>
   </v-app>
 </template>
 
@@ -85,12 +97,20 @@
         data()
         {
             return{
+                snackbarVisible: false,
+                error: '',
+
                 goodsCardLst:[],
                 activeBtn: 0,
             }
         },
         methods:
         {
+            closeSnackbar()
+            {
+                this.snackbarVisible = false
+                this.error = ''
+            },
             updateTradePage()
             {
                 console.log('Inside trade updatePage')
@@ -185,6 +205,8 @@
                     }
                 }).catch(error => {
                     if (error.response) {
+                        this.snackbarVisible = true
+                        this.error = error.response.data
                         console.log(error.response.data);
                         console.log(error.response.status);
                     }

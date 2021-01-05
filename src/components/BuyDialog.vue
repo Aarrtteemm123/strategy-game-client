@@ -31,7 +31,7 @@
           <v-btn
                   color="blue darken-1"
                   text
-                  @click="[closeBuyDialog(),buy(goods.name,numberBuying)]"
+                  @click="buy(goods.name,numberBuying)"
           >
             Confirm
           </v-btn>
@@ -54,7 +54,6 @@
         },
         methods:
         {
-
             closeBuyDialog()
             {
                 this.goods.flagBuy = false
@@ -70,9 +69,12 @@
                         console.log(response.status)
                         if (this.goods.have + Number(this.numberBuying) <= this.goods.warehouseCapacity && Number(this.numberBuying) > 0)
                           this.goods.have += Number(this.numberBuying)
+                        this.closeBuyDialog()
                     }
                 }).catch(error => {
                     if (error.response) {
+                        this.$emit('get-error', error.response.data)
+                        this.closeBuyDialog()
                         console.log(error.response.data);
                         console.log(error.response.status);
                     }

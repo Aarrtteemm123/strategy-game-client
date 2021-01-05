@@ -22,6 +22,19 @@
               striped
       ></v-progress-linear>
     </v-card-text>
+    <v-snackbar v-if="snackbarVisible"
+                v-model="snackbarVisible"
+                timeout="5000"
+    >
+      {{error}}
+      <v-btn
+              color="blue"
+              text
+              @click="closeSnackbar"
+      >
+        Close
+      </v-btn>
+    </v-snackbar>
   </v-card>
 </template>
 
@@ -30,8 +43,20 @@
     export default {
         name: "WarehouseCard",
         props: ['warehouse'],
+        data()
+        {
+            return{
+                snackbarVisible: false,
+                error: '',
+            }
+        },
         methods:
         {
+            closeSnackbar()
+            {
+                this.snackbarVisible = false
+                this.error = ''
+            },
             upgradeWarehouse(name)
             {
                 let userId = '5fb92cde490b69cce9f464df'
@@ -44,6 +69,8 @@
                     }
                 }).catch(error => {
                     if (error.response) {
+                        this.snackbarVisible = true;
+                        this.error = error.response.data
                         console.log(error.response.data);
                         console.log(error.response.status);
                     }

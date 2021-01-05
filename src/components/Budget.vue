@@ -2,12 +2,11 @@
   <v-app>
 
     <v-card
-
             width="600"
             elevation="8"
             style="margin-top: 20px"
     >
-      <v-card-title >Budget</v-card-title>
+      <v-card-title>Budget</v-card-title>
       <v-card-text style="font-size: large">
         <p>Money: {{money}}$</p>
         <p>Taxes profit: {{taxesProfit}}$</p>
@@ -416,6 +415,19 @@
         </v-expansion-panels>
       </v-card-text>
     </v-card>
+    <v-snackbar v-if="snackbarVisible"
+                v-model="snackbarVisible"
+                timeout="5000"
+    >
+      {{error}}
+      <v-btn
+              color="blue"
+              text
+              @click="closeSnackbar"
+      >
+        Close
+      </v-btn>
+    </v-snackbar>
   </v-app>
 </template>
 
@@ -427,6 +439,9 @@
         data()
         {
             return{
+                snackbarVisible: false,
+                error: '',
+
                 money: 0,
                 taxesProfit: 0,
                 farmsProfit:0,
@@ -461,6 +476,11 @@
             }
         },
         methods: {
+            closeSnackbar()
+            {
+                this.snackbarVisible = false
+                this.error = ''
+            },
             getColor (taxValue) {
                 if (taxValue < 20) return 'indigo';
                 if (taxValue < 40) return 'teal';
@@ -508,6 +528,8 @@
                     }
                 }).catch(error => {
                     if (error.response) {
+                        this.snackbarVisible = true;
+                        this.error = error.response.data
                         console.log(error.response.data);
                         console.log(error.response.status);
                     }
@@ -515,7 +537,6 @@
             },
             changeTaxes(name, newValue)
             {
-                //saving population taxes
                 console.log('change taxes')
                 let userId = '5f4814cc59e648f9cfba7e09'
                 GameService.changeTax(userId,name,newValue).then(response => {
@@ -527,6 +548,8 @@
                     }
                 }).catch(error => {
                     if (error.response) {
+                        this.snackbarVisible = true;
+                        this.error = error.response.data
                         console.log(error.response.data);
                         console.log(error.response.status);
                     }

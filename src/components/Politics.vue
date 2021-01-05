@@ -46,9 +46,20 @@
           </v-expansion-panel-content>
         </v-expansion-panel>
       </v-expansion-panels>
-
-
     </v-card-text>
+    <v-snackbar v-if="snackbarVisible"
+                v-model="snackbarVisible"
+                timeout="5000"
+    >
+      {{error}}
+      <v-btn
+              color="blue"
+              text
+              @click="closeSnackbar"
+      >
+        Close
+      </v-btn>
+    </v-snackbar>
   </v-card>
 </template>
 
@@ -60,6 +71,8 @@
         data()
         {
             return{
+                snackbarVisible: false,
+                error: '',
                 space:' ',
                 conscriptsLaw: 'Volunteer',
                 conscripts:[
@@ -127,6 +140,11 @@
             }
         },
         methods:{
+            closeSnackbar()
+            {
+                this.snackbarVisible = false
+                this.error = ''
+            },
             updatePoliticsPage()
             {
                 console.log('Inside politics updatePage')
@@ -145,6 +163,8 @@
                     }
                 }).catch(error => {
                     if (error.response) {
+                        this.snackbarVisible = true
+                        this.error = error.response.data
                         console.log(error.response.data);
                         console.log(error.response.status);
                     }
@@ -165,6 +185,8 @@
                         }
                     }).catch(error => {
                         if (error.response) {
+                            this.snackbarVisible = true;
+                            this.error = error.response.data
                             console.log(error.response.data);
                             console.log(error.response.status);
                         }
@@ -182,6 +204,8 @@
                         }
                     }).catch(error => {
                         if (error.response) {
+                            this.snackbarVisible = true
+                            this.error = error.response.data
                             console.log(error.response.data);
                             console.log(error.response.status);
                         }
@@ -202,6 +226,8 @@
                     }
                 }).catch(error => {
                     if (error.response) {
+                        this.snackbarVisible = true
+                        this.error = error.response.data
                         console.log(error.response.data);
                         console.log(error.response.status);
                     }

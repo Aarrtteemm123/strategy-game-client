@@ -18,6 +18,19 @@
         </v-btn>
       </v-container>
       <router-view></router-view>
+      <v-snackbar v-if="snackbarVisible"
+                  v-model="snackbarVisible"
+                  timeout="5000"
+      >
+        {{error}}
+        <v-btn
+                color="blue"
+                text
+                @click="closeSnackbar"
+        >
+          Close
+        </v-btn>
+      </v-snackbar>
     </v-app>
   </div>
 </template>
@@ -33,6 +46,8 @@
         data()
         {
           return{
+              snackbarVisible: false,
+              error: '',
               username:'',
               password:'',
               tick: 0,
@@ -40,6 +55,11 @@
           }
         },
         methods: {
+            closeSnackbar()
+            {
+                this.snackbarVisible = false
+                this.error = ''
+            },
             updateTime(time) {
                 this.tick++
                 this.time = {
@@ -65,6 +85,8 @@
                     }
                 }).catch(error => {
                     if (error.response) {
+                        this.snackbarVisible = true;
+                        this.error = error.response.data
                         console.log(error.response.data);
                         console.log(error.response.status);
                     }

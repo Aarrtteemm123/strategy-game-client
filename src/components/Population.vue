@@ -31,6 +31,19 @@
         </v-card-text>
       </v-tooltip>
     </v-card>
+    <v-snackbar v-if="snackbarVisible"
+                v-model="snackbarVisible"
+                timeout="5000"
+    >
+      {{error}}
+      <v-btn
+              color="blue"
+              text
+              @click="closeSnackbar"
+      >
+        Close
+      </v-btn>
+    </v-snackbar>
   </v-app>
 </template>
 
@@ -41,6 +54,9 @@
         data()
         {
             return {
+                snackbarVisible: false,
+                error: '',
+
                 population: 0,
                 solders: 0,
                 workers: 0,
@@ -58,6 +74,11 @@
         },
         methods:
         {
+            closeSnackbar()
+            {
+                this.snackbarVisible = false
+                this.error = ''
+            },
             updatePopulationPage()
             {
                 let userId = '5fb9425dd57895300fc7a8a7'
@@ -82,6 +103,8 @@
                     }
                 }).catch(error => {
                     if (error.response) {
+                        this.snackbarVisible = true
+                        this.error = error.response.data
                         console.log(error.response.data);
                         console.log(error.response.status);
                     }

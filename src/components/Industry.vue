@@ -71,7 +71,19 @@
         <IndustryCard v-on:update-page="updateIndustryPage" style="margin-bottom: 30px" v-if="activeBtn===3" v-bind:factory="item"></IndustryCard>
       </v-col>
     </v-row>
-
+    <v-snackbar v-if="snackbarVisible"
+                v-model="snackbarVisible"
+                timeout="5000"
+    >
+      {{error}}
+      <v-btn
+              color="blue"
+              text
+              @click="closeSnackbar"
+      >
+        Close
+      </v-btn>
+    </v-snackbar>
   </v-app>
 </template>
 
@@ -84,6 +96,8 @@
         data()
         {
             return{
+                snackbarVisible: false,
+                error: '',
                 activeBtn: 0,
                 farms:[],
                 mines:[],
@@ -93,6 +107,11 @@
         },
         methods:
         {
+            closeSnackbar()
+            {
+                this.snackbarVisible = false
+                this.error = ''
+            },
             updateIndustryPage()
             {
                 console.log('Inside industry updatePage')
@@ -109,6 +128,8 @@
                     }
                 }).catch(error => {
                     if (error.response) {
+                        this.snackbarVisible = true
+                        this.error = error.response.data
                         console.log(error.response.data);
                         console.log(error.response.status);
                     }

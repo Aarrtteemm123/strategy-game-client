@@ -17,8 +17,20 @@
             </v-expansion-panel-content>
           </v-expansion-panel>
         </v-expansion-panels>
-
     </v-card-text>
+    <v-snackbar v-if="snackbarVisible"
+                v-model="snackbarVisible"
+                timeout="5000"
+    >
+      {{error}}
+      <v-btn
+              color="blue"
+              text
+              @click="closeSnackbar"
+      >
+        Close
+      </v-btn>
+    </v-snackbar>
   </v-card>
 </template>
 
@@ -29,11 +41,18 @@
         data()
         {
             return{
+                snackbarVisible: false,
+                error: '',
                 newsList: []
             }
         },
         methods:
         {
+            closeSnackbar()
+            {
+                this.snackbarVisible = false
+                this.error = ''
+            },
             updateNewsPage()
             {
                 console.log('Inside news updatePage')
@@ -47,6 +66,8 @@
                     }
                 }).catch(error => {
                     if (error.response) {
+                        this.snackbarVisible = true;
+                        this.error = error.response.data
                         console.log(error.response.data);
                         console.log(error.response.status);
                     }
