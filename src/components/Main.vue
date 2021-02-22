@@ -113,11 +113,12 @@
             <Account v-if="items[1].active"></Account>
             <Players v-if="items[2].active"></Players>
             <News v-if="items[3].active"></News>
-            <AboutProject v-if="items[7].active"></AboutProject>
+            <AboutProject v-if="items[8].active"></AboutProject>
             <Help v-if="items[6].active"></Help>
+            <FQA v-if="items[7].active"></FQA>
             <SendFeedback v-if="items[5].active"></SendFeedback>
             <Settings v-if="items[4].active"></Settings>
-            <Exit v-if="items[8].active"></Exit>
+            <Exit v-if="items[9].active"></Exit>
           </v-row>
         </v-container>
       </v-content>
@@ -146,6 +147,7 @@
     import Industry from "@/components/Industry";
     import BasicStatistic from "@/components/BasicStatistic";
     import Players from "@/components/Players";
+    import FQA from "@/components/FQA";
     //import UserService from "@/services/user-service"
     //import GameService from "@/services/game-service"
 
@@ -153,6 +155,7 @@
         name: "Main",
         components: {
             Players,
+            FQA,
             BasicStatistic,
             Industry,
             Trade,
@@ -192,6 +195,7 @@
                     {active: false, icon: 'mdi-cog', text: 'Settings'},
                     {active: false, icon: 'mdi-message', text: 'Send feedback'},
                     {active: false, icon: 'mdi-help-circle', text: 'Help'},
+                    {active: false, icon: 'mdi-comment-question', text: 'FQA'},
                     {active: false, icon: 'mdi-briefcase', text: 'About project'},
                     {active: false, icon: 'mdi-exit-to-app', text: 'Exit'},
                 ],
