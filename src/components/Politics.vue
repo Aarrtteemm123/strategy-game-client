@@ -148,8 +148,9 @@
             updatePoliticsPage()
             {
                 console.log('Inside politics updatePage')
-                let userId = '5fb92cde490b69cce9f464df'
-                SystemService.getView(userId,'Politics').then(response => {
+                let userId = this.$cookies.get('userId')
+                let token = this.$cookies.get('token')
+                SystemService.getView(userId,token,'Politics').then(response => {
                     if (response.status === 200)
                     {
                         console.log(response.data)
@@ -172,11 +173,12 @@
             },
             changeCivilLaw(name)
             {
-                let userId = '5fb92cde490b69cce9f464df'
+                let userId = this.$cookies.get('userId')
+                let token = this.$cookies.get('token')
                 if (this.selectedLaws.includes(name))
                 {
                     // adopt law
-                    GameService.setPoliticsLaw(userId,name).then(response => {
+                    GameService.setPoliticsLaw(userId,token,name).then(response => {
                         if (response.status === 200)
                         {
                             console.log(response.data)
@@ -195,7 +197,7 @@
                 else
                 {
                     // cancel law
-                    GameService.cancelPoliticsLaw(userId,name).then(response => {
+                    GameService.cancelPoliticsLaw(userId,token,name).then(response => {
                         if (response.status === 200)
                         {
                             console.log(response.data)
@@ -216,8 +218,9 @@
             changeMilitaryLaw(name)
             {
                 console.log(name)
-                let userId = '5fb92cde490b69cce9f464df'
-                GameService.setPoliticsLaw(userId,'Conscript law: '+name).then(response => {
+                let userId = this.$cookies.get('userId')
+                let token = this.$cookies.get('token')
+                GameService.setPoliticsLaw(userId,token,'Conscript law: '+name).then(response => {
                     if (response.status === 200)
                     {
                         console.log(response.data)

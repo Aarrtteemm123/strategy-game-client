@@ -68,8 +68,9 @@
                 this.unit.dialog = false
                 console.log(this.unit.name)
                 console.log(this.unit.number)
-                let userId = '5fb92cde490b69cce9f464df'
-                GameService.editArmy(userId,this.unit.name,this.numberUnits).then(response => {
+                let userId = this.$cookies.get('userId')
+                let token = this.$cookies.get('token')
+                GameService.editArmy(userId,token,this.unit.name,this.numberUnits).then(response => {
                     if (response.status === 200)
                     {
                         console.log(response.data)

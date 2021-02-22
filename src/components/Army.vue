@@ -53,8 +53,9 @@
             updateArmyPage()
             {
                 console.log('Inside army updatePage')
-                let userId = '5fb92cde490b69cce9f464df'
-                SystemService.getView(userId,'Army').then(response => {
+                let userId = this.$cookies.get('userId')
+                let token = this.$cookies.get('token')
+                SystemService.getView(userId,token,'Army').then(response => {
                     if (response.status === 200)
                     {
                         console.log(response.data)

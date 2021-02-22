@@ -2,110 +2,106 @@ import http from "../http-common"
 
 class GameService {
 
-    getAll(userId)
+    changeTax(userId,token,nameTax,newValue)
     {
-        userId = '5fe23834c34647d8fb3b9a99'
-        return http.get(`/game/${userId}`)
-    }
-
-    changeTax(userId,nameTax,newValue)
-    {
-        userId = '5fe23834c34647d8fb3b9a99'
         let data = {
+            token: token,
             name_tax : nameTax,
             new_value : newValue
         }
         return http.put(`/game/change_taxes/${userId}`,data)
     }
 
-    upgradeTechnology(userId,nameTechnology)
+    upgradeTechnology(userId,token,nameTechnology)
     {
-        userId = '5fe23834c34647d8fb3b9a99'
         let data = {
+            token: token,
             name_technology:nameTechnology
         }
         return http.put(`/game/upgrade_technology/${userId}`,data)
     }
 
-    buildIndustry(userId,nameBuilding)
+    buildIndustry(userId,token,nameBuilding)
     {
-        userId = '5fe23834c34647d8fb3b9a99'
         let data = {
+            token: token,
             name_building:nameBuilding
         }
         return http.put(`/game/build_industry/${userId}`,data)
     }
 
-    removeIndustry(userId,nameBuilding)
+    removeIndustry(userId,token,nameBuilding)
     {
-        userId = '5fe23834c34647d8fb3b9a99'
         let data = {
+            token: token,
             name_building:nameBuilding
         }
         return http.put(`/game/remove_industry/${userId}`,data)
     }
 
-    upgradeWarehouse(userId,nameWarehouse)
+    upgradeWarehouse(userId,token,nameWarehouse)
     {
-        userId = '5fe23834c34647d8fb3b9a99'
         let data = {
+            token: token,
             name_warehouse:nameWarehouse
         }
         return http.put(`/game/upgrade_warehouse/${userId}`,data)
     }
 
-    setPoliticsLaw(userId,nameLaw)
+    setPoliticsLaw(userId,token,nameLaw)
     {
-        userId = '5fe23834c34647d8fb3b9a99'
         let data = {
+            token: token,
             name_law:nameLaw
         }
         return http.put(`/game/set_law/${userId}`,data)
     }
 
-    cancelPoliticsLaw(userId,nameLaw)
+    cancelPoliticsLaw(userId,token,nameLaw)
     {
-        userId = '5fe23834c34647d8fb3b9a99'
         let data = {
+            token: token,
             name_law:nameLaw
         }
         return http.put(`/game/cancel_law/${userId}`,data)
     }
 
-    buyGoods(userId,nameGoods,number)
+    buyGoods(userId,token,nameGoods,number)
     {
-        userId = '5fe23834c34647d8fb3b9a99'
         let data = {
+            token: token,
             name_goods:nameGoods,
             number:number
         }
         return http.post(`/game/buy_goods/${userId}`,data)
     }
 
-    sellGoods(userId,nameGoods,number)
+    sellGoods(userId,token,nameGoods,number)
     {
-        userId = '5fe23834c34647d8fb3b9a99'
         let data = {
+            token: token,
             name_goods:nameGoods,
             number:number
         }
         return http.post(`/game/sell_goods/${userId}`,data)
     }
 
-    editArmy(userId,nameUnit,newNumber)
+    editArmy(userId,token,nameUnit,newNumber)
     {
-        userId = '5fe23834c34647d8fb3b9a99'
         let data = {
+            token: token,
             name_unit:nameUnit,
             new_number:newNumber
         }
         return http.put(`/game/edit_army/${userId}`,data)
     }
 
-    calculateWar(userId,defendingPlayerName)
+    calculateWar(userId,token,defendingPlayerName)
     {
-        userId = '5fe23834c34647d8fb3b9a99'
-        return http.post(`/game/calculate_war/${userId}/${defendingPlayerName}`)
+        let data = {
+            token: token
+        }
+        return http.post(`/game/calculate_war/${userId}/${defendingPlayerName}`,data)
     }
 
 }

@@ -57,8 +57,9 @@
             sendFeedback()
             {
                 console.log('sending feedback...')
-                let userId = '5fb92cde490b69cce9f464df'
-                SystemService.sendFeedback(userId,this.rating,this.text).then(response => {
+                let userId = this.$cookies.get('userId')
+                let token = this.$cookies.get('token')
+                SystemService.sendFeedback(userId,token,this.rating,this.text).then(response => {
                     if (response.status === 200)
                     {
                         console.log(response.data)

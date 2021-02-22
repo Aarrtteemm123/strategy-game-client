@@ -174,8 +174,9 @@
             updateAccountPage()
             {
                 console.log('Inside account updatePage')
-                let userId = '5fb92cde490b69cce9f464df'
-                SystemService.getView(userId,'Account').then(response => {
+                let userId = this.$cookies.get('userId')
+                let token = this.$cookies.get('token')
+                SystemService.getView(userId,token,'Account').then(response => {
                     if (response.status === 200)
                     {
                         console.log(response.data)
@@ -204,8 +205,9 @@
             editUserData()
             {
                 // edit user data
-                let userId = '5fb9425dd57895300fc7a8a7'
-                UserService.changeUserData(userId,this.username,this.password,
+                let userId = this.$cookies.get('userId')
+                let token = this.$cookies.get('token')
+                UserService.changeUserData(userId,token,this.username,this.password,
                     this.email,this.nameCountry,this.srcFlagImage).then(response => {
                     if (response.status === 200)
                     {
@@ -231,8 +233,9 @@
             deleteAccount()
             {
                 // delete account
-                let userId = '5fb9425dd57895300fc7a8a7'
-                UserService.delete(userId,this.bufferPassword).then(response => {
+                let userId = this.$cookies.get('userId')
+                let token = this.$cookies.get('token')
+                UserService.delete(userId,token,this.bufferPassword).then(response => {
                     if (response.status === 200)
                     {
                         console.log(response.data)

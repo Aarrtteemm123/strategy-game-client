@@ -264,8 +264,9 @@
                 if (this.searchText != null)
                 {
                     console.log('Inside account updatePage')
-                    let userId = '5fb92cde490b69cce9f464df'
-                    SystemService.findPlayer(userId,this.searchText).then(response => {
+                    let userId = this.$cookies.get('userId')
+                    let token = this.$cookies.get('token')
+                    SystemService.findPlayer(userId,token,this.searchText).then(response => {
                         if (response.status === 200) {
                             console.log(response.data)
                             console.log(response.status)
@@ -342,8 +343,9 @@
                 // attack player
                 this.flAttackDialog = false
                 console.log('attack player')
-                let userId = '5fb92cde490b69cce9f464df'
-                GameService.calculateWar(userId,this.selectedPlayer.namePlayer).then(response => {
+                let userId = this.$cookies.get('userId')
+                let token = this.$cookies.get('token')
+                GameService.calculateWar(userId,token,this.selectedPlayer.namePlayer).then(response => {
                     if (response.status === 200) {
                         console.log(response.data)
                         console.log(response.status)
@@ -361,8 +363,9 @@
             },
             updateTopPlayersPage()
             {
-                let userId = '5fb92cde490b69cce9f464df'
-                SystemService.getView(userId,'TopPlayers').then(response => {
+                let userId = this.$cookies.get('userId')
+                let token = this.$cookies.get('token')
+                SystemService.getView(userId,token,'TopPlayers').then(response => {
                     if (response.status === 200)
                     {
                         console.log(response.data)

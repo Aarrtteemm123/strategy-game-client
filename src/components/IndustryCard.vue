@@ -80,8 +80,9 @@
             },
             buildIndustry(name)
             {
-                let userId = '5fb92cde490b69cce9f464df'
-                GameService.buildIndustry(userId,name).then(response => {
+                let userId = this.$cookies.get('userId')
+                let token = this.$cookies.get('token')
+                GameService.buildIndustry(userId,token,name).then(response => {
                     if (response.status === 200)
                     {
                         console.log(response.data)
@@ -100,9 +101,10 @@
             },
             removeIndustry(name)
             {
-                let userId = '5fb92cde490b69cce9f464df'
+                let userId = this.$cookies.get('userId')
+                let token = this.$cookies.get('token')
                 console.log(name)
-                GameService.removeIndustry(userId,name).then(response => {
+                GameService.removeIndustry(userId,token,name).then(response => {
                     if (response.status === 200)
                     {
                         console.log(response.data)

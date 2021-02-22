@@ -491,8 +491,9 @@
             updatePage()
             {
                 console.log('Inside updatePage')
-                let userId = '5f4814cc59e648f9cfba7e09'
-                SystemService.getView(userId,'Budget').then(response => {
+                let userId = this.$cookies.get('userId')
+                let token = this.$cookies.get('token')
+                SystemService.getView(userId,token,'Budget').then(response => {
                     if (response.status === 200)
                     {
                         console.log(response.data)
@@ -538,8 +539,9 @@
             changeTaxes(name, newValue)
             {
                 console.log('change taxes')
-                let userId = '5f4814cc59e648f9cfba7e09'
-                GameService.changeTax(userId,name,newValue).then(response => {
+                let userId = this.$cookies.get('userId')
+                let token = this.$cookies.get('token')
+                GameService.changeTax(userId,token,name,newValue).then(response => {
                     if (response.status === 200)
                     {
                         console.log(response.data)

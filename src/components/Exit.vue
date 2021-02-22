@@ -37,6 +37,8 @@
 
 <script>
     import router from "@/router";
+    import UserService from '@/services/user-service';
+
     export default {
         name: "Exit",
         data()
@@ -51,7 +53,23 @@
                 // exit
                 this.dialogExit = false;
                 console.log('Exit func')
-                router.push({path: '/login'})
+                let userId = this.$cookies.get('userId')
+                let token = this.$cookies.get('token')
+                UserService.logout(userId,token).then(response => {
+                    if (response.status === 200)
+                    {
+                        console.log(response.data)
+                        console.log(response.status)
+                        router.push({path: '/login'})
+                        this.$cookies.remove("userId");
+                        this.$cookies.remove("token");
+                    }
+                }).catch(error => {
+                    if (error.response) {
+                        console.log(error.response.data);
+                        console.log(error.response.status);
+                    }
+                })
             }
         }
     }

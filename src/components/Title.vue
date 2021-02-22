@@ -74,23 +74,26 @@
                 router.push({path: 'register'})
             },
             clkBtnLogin() {
-                // auth user
-                UserService.login(this.username,this.password).then(response => {
-                    if (response.status === 202)
-                    {
-                        console.log(response.data)
-                        console.log(response.status)
-                        let userId = response.data
-                        router.push({ path: `/game/${userId}` })
-                    }
-                }).catch(error => {
-                    if (error.response) {
-                        this.snackbarVisible = true;
-                        this.error = error.response.data
-                        console.log(error.response.data);
-                        console.log(error.response.status);
-                    }
-                })
+                if (this.username !== '' && this.password !== '')
+                {
+                    UserService.login(this.username,this.password).then(response => {
+                        if (response.status === 202)
+                        {
+                            console.log(response.data)
+                            console.log(response.status)
+                            this.$cookies.set("userId",response.data['user_id'],"1d");
+                            this.$cookies.set("token",response.data['token'],"1d");
+                            router.push({ path: `/game/${response.data['user_id']}` })
+                        }
+                    }).catch(error => {
+                        if (error.response) {
+                            this.snackbarVisible = true;
+                            this.error = error.response.data
+                            console.log(error.response.data);
+                            console.log(error.response.status);
+                        }
+                    })
+                }
             }
         },
         mounted() {

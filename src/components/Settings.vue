@@ -60,8 +60,9 @@
             updateSettingsPage()
             {
                 console.log('Inside settings updatePage')
-                let userId = '5fb92cde490b69cce9f464df'
-                SystemService.getView(userId,'Settings').then(response => {
+                let userId = this.$cookies.get('userId')
+                let token = this.$cookies.get('token')
+                SystemService.getView(userId,token,'Settings').then(response => {
                     if (response.status === 200)
                     {
                         console.log(response.data)
@@ -84,8 +85,9 @@
             updateSettings()
             {
                 console.log(this.notifyList)
-                let userId = '5fb92cde490b69cce9f464df'
-                SystemService.setSetting(userId,this.notifyList).then(response => {
+                let userId = this.$cookies.get('userId')
+                let token = this.$cookies.get('token')
+                SystemService.setSetting(userId,token,this.notifyList).then(response => {
                     if (response.status === 200)
                     {
                         console.log(response.data)

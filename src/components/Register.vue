@@ -87,15 +87,13 @@
                 this.error = ''
             },
             clkBtnRegister() {
-                // register user
                 UserService.register(this.username,this.password,this.email,
                 this.countryName,this.flagImg).then(response => {
                     if (response.status === 201)
                     {
                         console.log(response.data)
                         console.log(response.status)
-                        let userId = response.data
-                        router.push({ path: `/game/${userId}` })
+                        router.push({ path: `login` })
                     }
                 }).catch(error => {
                     if (error.response) {

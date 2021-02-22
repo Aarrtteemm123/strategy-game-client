@@ -2,35 +2,39 @@ import http from "@/http-common";
 
 class SystemService {
 
-    getView(userId,nameView)
+    getView(userId,token,nameView)
     {
-        userId = '5fe23834c34647d8fb3b9a99'
-        return http.get(`/game/get_view/${userId}/${nameView}`)
+        let data = {
+            token: token,
+        }
+        return http.post(`/game/get_view/${userId}/${nameView}`,data)
     }
 
-    setSetting(userId, settingList)
+    setSetting(userId, token, settingList)
     {
-        userId = '5fe23834c34647d8fb3b9a99'
         let data = {
+            token: token,
             setting_list: settingList
         }
         return http.put(`/game/set_setting/${userId}`,data)
     }
 
-    sendFeedback(userId,rating,msg)
+    sendFeedback(userId,token,rating,msg)
     {
-        userId = '5fe23834c34647d8fb3b9a99'
         let data = {
+            token: token,
             rating:rating,
             msg:msg,
         }
         return http.post(`/game/feedback/${userId}`,data)
     }
 
-    findPlayer(userId,namePlayer)
+    findPlayer(userId,token,namePlayer)
     {
-        userId = '5fe23834c34647d8fb3b9a99'
-        return http.post(`/game/find/${userId}/${namePlayer}`)
+        let data = {
+            token: token
+        }
+        return http.post(`/game/find/${userId}/${namePlayer}`,data)
     }
 }
 

@@ -81,8 +81,9 @@
             },
             updatePopulationPage()
             {
-                let userId = '5fb9425dd57895300fc7a8a7'
-                SystemService.getView(userId,'Population').then(response => {
+                let userId = this.$cookies.get('userId')
+                let token = this.$cookies.get('token')
+                SystemService.getView(userId,token,'Population').then(response => {
                     if (response.status === 200)
                     {
                         console.log(response.data)

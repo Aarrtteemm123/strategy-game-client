@@ -61,8 +61,9 @@
 
             buy(name,number)
             {
-                let userId = '5fb92cde490b69cce9f464df'
-                GameService.buyGoods(userId,name,number).then(response => {
+                let userId = this.$cookies.get('userId')
+                let token = this.$cookies.get('token')
+                GameService.buyGoods(userId,token,name,number).then(response => {
                     if (response.status === 200)
                     {
                         console.log(response.data)

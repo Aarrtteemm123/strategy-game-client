@@ -7,9 +7,12 @@ class UserService {
         return http.post(`/login/${username}/${password}`);
     }
 
-    logout(userId)
+    logout(userId,token)
     {
-        return http.post(`/logout/${userId}`);
+        let data = {
+            token: token
+        }
+        return http.post(`/logout/${userId}`,data);
     }
 
     register(username,password,email,countryName,linkOnFlag)
@@ -24,10 +27,10 @@ class UserService {
         return http.post('/register',data)
     }
 
-    changeUserData(userId,username,password,email,countryName,linkOnFlag)
+    changeUserData(userId,token,username,password,email,countryName,linkOnFlag)
     {
-        userId = '5fe23834c34647d8fb3b9a99'
         let data = {
+            token: token,
             username : username,
             password : password,
             country_name : countryName,
@@ -36,10 +39,12 @@ class UserService {
         return http.put(`/game/change_user_data/${userId}`,data)
     }
 
-    delete(userId,password)
+    delete(userId,token,password)
     {
-        userId = '5fe23834c34647d8fb3b9a99'
-        return http.delete(`/game/delete_account/${userId}/${password}`)
+        let data = {
+            token: token
+        }
+        return http.delete(`/game/delete_account/${userId}/${password}`,data)
     }
 }
 

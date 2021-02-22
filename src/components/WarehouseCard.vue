@@ -59,8 +59,9 @@
             },
             upgradeWarehouse(name)
             {
-                let userId = '5fb92cde490b69cce9f464df'
-                GameService.upgradeWarehouse(userId,name).then(response => {
+                let userId = this.$cookies.get('userId')
+                let token = this.$cookies.get('token')
+                GameService.upgradeWarehouse(userId,token,name).then(response => {
                     if (response.status === 200)
                     {
                         console.log(response.data)
