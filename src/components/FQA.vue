@@ -18,25 +18,68 @@
         </v-expansion-panel>
       </v-expansion-panels>
     </v-card-text>
+    <v-snackbar v-if="snackbarVisible"
+                v-model="snackbarVisible"
+                timeout="5000"
+    >
+      {{error}}
+      <v-btn
+              color="blue"
+              text
+              @click="closeSnackbar"
+      >
+        Close
+      </v-btn>
+    </v-snackbar>
   </v-card>
 </template>
 
 <script>
-
+    import SystemService from "@/services/system-service"
     export default {
         name: "FQA",
         data()
         {
             return{
-                FQAList: [
-                    {question:'Question number 1',answer:'Answer on question number 1'},
-                    {question:'Question number 2',answer:'Answer on question number 2'},
-                    {question:'Question number 3',answer:'Answer on question number 3'},
-                    {question:'Question number 4',answer:'Answer on question number 4'},
-                    {question:'Question number 5',answer:'Answer on question number 5'},
-                ]
+                FQAList: [],
+                snackbarVisible: false,
+                error: '',
             }
         },
+        methods:
+        {
+            closeSnackbar()
+            {
+                this.snackbarVisible = false
+                this.error = ''
+            },
+
+            updateFQAPage()
+            {
+                console.log('Inside FQA updatePage')
+                let userId = this.$cookies.get('userId')
+                let token = this.$cookies.get('token')
+                SystemService.getView(userId,token,'FQA').then(response => {
+                    if (response.status === 200)
+                    {
+                        console.log(response.data)
+                        console.log(response.status)
+                        this.FQAList = response.data
+                    }
+                }).catch(error => {
+                    if (error.response) {
+                        this.snackbarVisible = true
+                        this.error = error.response.data
+                        console.log(error.response.data);
+                        console.log(error.response.status);
+                    }
+                })
+            }
+        },
+        mounted()
+        {
+            this.updateFQAPage()
+        }
     }
 </script>
 
