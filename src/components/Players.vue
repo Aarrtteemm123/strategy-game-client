@@ -169,6 +169,8 @@
       >
         <v-card>
           <v-card-title style="margin-left: 120px" class="headline">Result war</v-card-title>
+          <p v-if="victoryFlag" style="font-size: large; color: green">Victory</p>
+          <p v-if="!victoryFlag" style="font-size: large; color: red">Losing</p>
 
           <v-card-text>
             <h2 style="margin-top: 10px;margin-bottom: 20px">Losses:</h2>
@@ -235,6 +237,7 @@
                 yourMilitaryPlace: 0,
 
                 resultAttack: {},
+                victoryFlag: null,
                 topPlayers:[],
                 headers: [
                     { text: 'ID', align: 'start', sortable: true, value: 'id'},
@@ -350,6 +353,7 @@
                         console.log(response.data)
                         console.log(response.status)
                         this.resultAttack = response.data
+                        this.victoryFlag = response.data['victory_flag']
                     }
                 }).catch(error => {
                     if (error.response) {
@@ -416,5 +420,10 @@
 </script>
 
 <style scoped>
-
+  .greenText{
+    color: green;
+  }
+  .redText{
+    color: red;
+  }
 </style>

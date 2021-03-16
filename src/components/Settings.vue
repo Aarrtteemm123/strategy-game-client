@@ -14,12 +14,12 @@
           <v-container >
             <h2>System notifications</h2>
             <v-switch v-model="notifyList" @change="updateSettings" label="notify news" value="news"></v-switch>
-            <v-switch v-model="notifyList" @change="updateSettings" label="notify updates" value="updates"></v-switch>
             <hr>
             <h2 style="margin-top: 10px">Game notifications</h2>
             <v-switch v-model="notifyList" @change="updateSettings" label="notify attacks on the country" value="attacks"></v-switch>
-            <v-switch v-model="notifyList" @change="updateSettings" label="notify when warehouse overflow" value="warehouse overflow"></v-switch>
+            <v-switch v-model="notifyList" @change="updateSettings" label="notify when warehouse overflow or empty" value="warehouse overflow or empty"></v-switch>
             <v-switch v-model="notifyList" @change="updateSettings" label="notify on low budget" value="low budget"></v-switch>
+            <v-switch v-model="notifyList" @change="updateSettings" label="notify on low population" value="low population"></v-switch>
           </v-container>
       </v-card-text>
     </v-card>

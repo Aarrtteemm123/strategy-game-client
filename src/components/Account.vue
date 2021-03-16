@@ -54,7 +54,7 @@
                     <v-text-field v-model="nameCountry" label="Name country*"></v-text-field>
                   </v-col>
                   <v-col cols="12">
-                    <v-text-field v-model="username" label="Username*" required></v-text-field>
+                    <v-text-field disabled v-model="username" label="Username*" required></v-text-field>
                   </v-col>
                   <v-col cols="12">
                     <v-text-field
@@ -207,7 +207,7 @@
                 // edit user data
                 let userId = this.$cookies.get('userId')
                 let token = this.$cookies.get('token')
-                UserService.changeUserData(userId,token,this.username,this.password,
+                UserService.changeUserData(userId,token,this.password,
                     this.email,this.nameCountry,this.srcFlagImage).then(response => {
                     if (response.status === 200)
                     {

@@ -77,7 +77,7 @@
           <span class="hidden-sm-and-down">Online strategy - YOUR COUNTRY</span>
         </v-toolbar-title>
         <v-spacer></v-spacer>
-        <v-btn @click="items[8].active = true" style="margin-right: 15px"
+        <v-btn @click="choiceMenu('Exit')" style="margin-right: 15px"
                icon
                large
         >
@@ -178,7 +178,7 @@
                         active: false, // only false
                         realActive:true, // true
                         children: [
-                            {active: true, icon: 'mdi-chart-pie', text: 'Basic statistic'},
+                            {active: false, icon: 'mdi-chart-pie', text: 'Basic statistic'},
                             {active: false, icon: 'mdi-currency-usd-circle-outline', text: 'Budget'},
                             {active: false, icon: 'mdi-atom', text: 'Technology'},
                             {active: false, icon: 'mdi-factory', text: 'Industry'},
@@ -205,15 +205,36 @@
             choiceMenu(item) {
                 console.log(item);
                 this.items.forEach(el => {
-                    el.text === item ? el.active = true : el.active = false
+                    if (el.text === item)
+                    {
+                        el.active = true
+                        localStorage.setItem('last page', item);
+                    }
+                    else
+                    {
+                        el.active = false
+                    }
                 });
                 this.items[0].children.forEach(el => {
-                    el.text === item ? el.active = true : el.active = false
+                    if (el.text === item)
+                    {
+                        el.active = true
+                        localStorage.setItem('last page', item);
+                    }
+                    else
+                    {
+                        el.active = false
+                    }
                 });
             },
         },
         mounted() {
             console.log('Inside main mounted');
+            if (localStorage.getItem('last page') === null)
+            {
+                localStorage.setItem('last page','Basic statistic')
+            }
+            this.choiceMenu(localStorage.getItem('last page'))
         }
     }
 </script>

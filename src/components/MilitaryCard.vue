@@ -14,8 +14,8 @@
     <p>Number: {{unit.number}}</p>
     <p>Solders per unit: {{unit.peopleOnUnit}}</p>
     <p>Total serve soldiers: {{unit.number * unit.peopleOnUnit}}</p>
-    <p>Maintenance price: {{unit.maintenancePriceUnit}} $/day</p>
-    <p>Total maintenance price: {{unit.number * unit.maintenancePriceUnit}} $/day</p>
+    <p>Maintenance price: {{unit.maintenancePriceUnit}} $/hour</p>
+    <p>Total maintenance price: {{unit.number * unit.maintenancePriceUnit}} $/hour</p>
     <p>Reserve weapon: {{unit.weaponOnStorage}}</p>
     <p>Reserve military manpower: {{unit.manpower}}</p>
 

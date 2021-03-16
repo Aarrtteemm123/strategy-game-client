@@ -16,7 +16,7 @@
         <p>Army profit: {{militaryProfit}}$</p>
         <p>Military expenses: {{militaryExpenses}}$</p>
         <hr>
-        <p style="margin-top: 10px">Total profit: {{totalProfit}}$</p>
+        <p style="margin-top: 10px">Total profit: {{totalProfit - militaryExpenses}}$</p>
       </v-card-text>
     </v-card>
     <v-card
@@ -60,7 +60,7 @@
                 track-color="grey"
                 :thumb-size="28"
                 thumb-label="always"
-                min="1"
+                min="0"
                 max="100"
         >
           <template v-slot:prepend>
@@ -139,7 +139,7 @@
                 track-color="grey"
                 :thumb-size="28"
                 thumb-label="always"
-                min="1"
+                min="0"
                 max="100"
         >
           <template v-slot:prepend>
@@ -218,7 +218,7 @@
                 track-color="grey"
                 :thumb-size="28"
                 thumb-label="always"
-                min="1"
+                min="0"
                 max="100"
         >
           <template v-slot:prepend>
@@ -297,7 +297,7 @@
                 track-color="grey"
                 :thumb-size="28"
                 thumb-label="always"
-                min="1"
+                min="0"
                 max="100"
         >
           <template v-slot:prepend>
@@ -376,7 +376,7 @@
                 track-color="grey"
                 :thumb-size="28"
                 thumb-label="always"
-                min="1"
+                min="0"
                 max="100"
         >
           <template v-slot:prepend>
@@ -559,44 +559,74 @@
 
             },
             decrementPopTaxes () {
-                this.popTax--
-                this.changeTaxes('population_taxes',this.popTax)
+                if (this.popTax > 0)
+                {
+                    this.popTax--
+                    this.changeTaxes('population_taxes',this.popTax)
+                }
             },
             incrementPopTaxes () {
-                this.popTax++
-                this.changeTaxes('population_taxes',this.popTax)
+                if (this.popTax < 100)
+                {
+                    this.popTax++
+                    this.changeTaxes('population_taxes',this.popTax)
+                }
             },
             decrementFarmsTaxes () {
-                this.farmsTax--
-                this.changeTaxes('farms_taxes',this.farmsTax)
+                if (this.farmsTax > 0)
+                {
+                    this.farmsTax--
+                    this.changeTaxes('farms_taxes',this.farmsTax)
+                }
             },
             incrementFarmsTaxes () {
-                this.farmsTax++
-                this.changeTaxes('farms_taxes',this.farmsTax)
+                if (this.farmsTax < 100)
+                {
+                    this.farmsTax++
+                    this.changeTaxes('farms_taxes',this.farmsTax)
+                }
             },
             decrementMinesTaxes () {
-                this.minesTax--
-                this.changeTaxes('mines_taxes',this.minesTax)
+                if (this.minesTax > 0)
+                {
+                    this.minesTax--
+                    this.changeTaxes('mines_taxes',this.minesTax)
+                }
             },
             incrementMinesTaxes () {
-                this.minesTax++
-                this.changeTaxes('mines_taxes',this.minesTax)
+                if (this.minesTax < 100)
+                {
+                    this.minesTax++
+                    this.changeTaxes('mines_taxes',this.minesTax)
+                }
             },
             decrementFactoriesTaxes () {
-                this.factoriesTax--
-                this.changeTaxes('factories_taxes',this.factoriesTax)
+                if (this.factoriesTax > 0)
+                {
+                    this.factoriesTax--
+                    this.changeTaxes('factories_taxes',this.factoriesTax)
+                }
             },
             incrementFactoriesTaxes () {
-                this.factoriesTax++
-                this.changeTaxes('factories_taxes',this.factoriesTax)
+                if (this.factoriesTax < 100)
+                {
+                    this.factoriesTax++
+                    this.changeTaxes('factories_taxes',this.factoriesTax)
+                }
             },
             decrementArmyTaxes () {
-                this.armyTax--
-                this.changeTaxes('military_taxes',this.armyTax)
+                if (this.armyTax > 0)
+                {
+                    this.armyTax--
+                    this.changeTaxes('military_taxes',this.armyTax)
+                }
             },
             incrementArmyTaxes () {
-                this.armyTax++
-                this.changeTaxes('military_taxes',this.armyTax)
+                if (this.armyTax < 100)
+                {
+                    this.armyTax++
+                    this.changeTaxes('military_taxes',this.armyTax)
+                }
             },
         },
         mounted() {

@@ -8,8 +8,8 @@
     </v-img>
     <v-card-subtitle style="font-weight: bold;font-size: x-large;" class="pb-0">{{warehouse.name}}</v-card-subtitle>
     <v-card-text style="font-weight: bolder;font-size: medium" class="text-left">
-      <div style="margin-top: 15px">{{warehouse.value}}/{{warehouse.capacity}} tonnes (100% in {{warehouse.capacity/warehouse.filling_speed}} hours)</div>
-      <div style="margin-top: 15px">Filling speed: +{{warehouse.filling_speed}} t/h</div>
+      <div style="margin-top: 15px">{{warehouse.value}}/{{warehouse.capacity}} tonnes (100% in {{Number((warehouse.capacity/warehouse.filling_speed).toFixed(1))}} hours)</div>
+      <div style="margin-top: 15px">Filling speed: {{warehouse.filling_speed}} t/h</div>
       <div style="margin-top: 15px">Level: {{warehouse.level}}</div>
       <div style="margin-top: 15px">Max level: {{warehouse.max_level}}</div>
       <div style="margin-top: 15px">Price upgrade: {{warehouse.price_upgrade}}$ (+{{warehouse.added_capacity}}t)</div>

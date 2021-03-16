@@ -61,6 +61,7 @@
                         console.log(response.data)
                         console.log(response.status)
                         router.push({path: '/login'})
+                        localStorage.clear()
                         this.$cookies.remove("userId");
                         this.$cookies.remove("token");
                     }

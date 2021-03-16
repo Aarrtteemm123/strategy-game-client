@@ -27,11 +27,10 @@ class UserService {
         return http.post('/register',data)
     }
 
-    changeUserData(userId,token,username,password,email,countryName,linkOnFlag)
+    changeUserData(userId,token,password,email,countryName,linkOnFlag)
     {
         let data = {
             token: token,
-            username : username,
             password : password,
             country_name : countryName,
             link_on_flag : linkOnFlag
