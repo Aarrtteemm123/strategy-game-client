@@ -75,16 +75,7 @@
                     {
                         console.log(response.data)
                         console.log(response.status)
-                        let dif = this.unit.number - this.numberUnits
-                        if (this.unit.manpower + (dif * this.unit.peopleOnUnit) >= 0 && this.unit.weaponOnStorage + dif >= 0 && this.numberUnits > 0)
-                        {
-                            this.unit.number = this.numberUnits
-                            this.unit.weaponOnStorage +=dif
-                            this.unit.manpower +=dif
-
-                            if (this.unit.weaponOnStorage > this.unit.storageCapacity)
-                                this.unit.weaponOnStorage = this.unit.storageCapacity
-                        }
+                        this.$emit('update-army-page')
                     }
                 }).catch(error => {
                     if (error.response) {

@@ -82,6 +82,11 @@
                 ],
             }
         },
+        methods:{
+            callMethodForUpdatingArmyPage() {
+
+            }
+        }
     }
 </script>
 

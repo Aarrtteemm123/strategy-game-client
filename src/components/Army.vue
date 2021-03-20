@@ -10,7 +10,7 @@
               sm="6"
       >
         <MilitaryCard style="margin-top: 30px;" v-bind:unit="item"></MilitaryCard>
-        <EditMilitaryDialog v-bind:unit="item"></EditMilitaryDialog>
+        <EditMilitaryDialog @update-army-page="updateArmyPage" v-bind:unit="item"></EditMilitaryDialog>
       </v-col>
     </v-row>
     <v-snackbar v-if="snackbarVisible"
@@ -60,6 +60,9 @@
                     {
                         console.log(response.data)
                         console.log(response.status)
+                        this.snackbarVisible = false
+                        this.error = ''
+                        this.army = []
                         response.data.forEach(element => {
                             let armyCardView = {
                                 name: element['name'],
