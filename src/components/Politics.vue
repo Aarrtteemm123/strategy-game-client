@@ -14,11 +14,11 @@
         <v-expansion-panel>
           <v-expansion-panel-header>Laws</v-expansion-panel-header>
           <p>Adopted laws: {{ selectedLaws }}</p>
-          <v-expansion-panel-content v-for="law in PopLaws" v-bind:key="law.id+law">
+          <v-expansion-panel-content v-for="law in popLaws" v-bind:key="law.id+law">
             <v-checkbox @change="changeCivilLaw(law.name)" v-model="selectedLaws" :label=law.name+law.description :value=law.name></v-checkbox>
             <v-expansion-panel-content v-for="item in law.modifiers" v-bind:key="item.id+item">
               <div class="text-left" style="font-size: large" v-bind:class="{greenText:item.color==='green',redText:item.color==='red',whiteText:item.color==='white'}">
-                {{item.value}}  {{item.to}}
+                {{item.value}}  {{item.msg}}
               </div>
             </v-expansion-panel-content>
           </v-expansion-panel-content>
@@ -26,7 +26,7 @@
             Conscript law (percent of the total population) {{conscriptsLaw}}
             <v-radio-group v-model="conscriptsLaw">
               <v-radio
-                      v-for="item in conscripts"
+                      v-for="item in conscriptionLaws"
                       :key="item.id+item"
                       :label=item.name+space+item.value
                       :value="item.name"
@@ -34,12 +34,12 @@
               ></v-radio>
             </v-radio-group>
             <div style="font-size: large">Modifiers:</div>
-            <div style="font-size: large" class="text-left" v-for="item in conscripts" v-bind:key="item.id+item">
+            <div style="font-size: large" class="text-left" v-for="item in conscriptionLaws" v-bind:key="item.id+item">
               {{item.name}} {{item.value}}
               <hr>
               <div style="margin-top: 5px;margin-bottom: 5px" v-for="item2 in item.modifiers" v-bind:key="item2.id+item2">
                 <div style="font-size: large" v-bind:class="{greenText:item2.color==='green',redText:item2.color==='red',whiteText:item2.color==='white'}">
-                  {{item2.value}} {{item2.to}}
+                  {{item2.value}} {{item2.msg}}
                 </div>
               </div>
             </div>
@@ -74,68 +74,9 @@
                 snackbarVisible: false,
                 error: '',
                 space:' ',
-                conscriptsLaw: 'Volunteer',
-                conscripts:[
-                    {value:'0.5%',name:'Elite', modifiers:[
-                            {value: '-10%', to:'population', from: 'conscripts law', color: 'red'},
-                            {value: '+10%', to:'industry', from: 'conscripts law', color: 'green'},
-                            {value: '+10%', to:'attack army', from: 'conscripts law', color: 'green'},
-                            {value: '+10%', to:'defence army', from: 'conscripts law', color: 'green'},
-                        ]},
-                    {value:'1.5%',name:'Volunteer', modifiers:[]},
-                    {value:'2.5%',name:'Limited Conscription', modifiers:[
-                            {value: '-5%', to:'industry', from: 'conscripts law', color: 'red'},
-                            {value: '+5%', to:'attack army', from: 'conscripts law', color: 'green'},
-                            {value: '+5%', to:'defence army', from: 'conscripts law', color: 'green'},
-                        ]},
-                    {value:'5%',name:'Extensive Conscription', modifiers:[
-                            {value: '-5%', to:'industry', from: 'conscripts law', color: 'red'},
-                        ]},
-                    {value:'10%',name:'Service by Requirement', modifiers:[
-                            {value: '-5%', to:'population', from: 'conscripts law', color: 'red'},
-                            {value: '-5%', to:'industry', from: 'conscripts law', color: 'red'},
-                            {value: '-5%', to:'attack army', from: 'conscripts law', color: 'red'},
-                            {value: '-5%', to:'defence army', from: 'conscripts law', color: 'red'},
-                        ]},
-                    {value:'20%',name:'All Adults Serve', modifiers:[
-                            {value: '-10%', to:'population', from: 'conscripts law', color: 'red'},
-                            {value: '-15%', to:'industry', from: 'conscripts law', color: 'red'},
-                            {value: '-5%', to:'attack army', from: 'conscripts law', color: 'red'},
-                            {value: '-5%', to:'defence army', from: 'conscripts law', color: 'red'},
-                        ]},
-                    {value:'30%',name:'All with weapons', modifiers:[
-                            {value: '-15%', to:'population', from: 'conscripts law', color: 'red'},
-                            {value: '-35%', to:'industry', from: 'conscripts law', color: 'red'},
-                            {value: '-15%', to:'attack army', from: 'conscripts law', color: 'red'},
-                            {value: '-10%', to:'defence army', from: 'conscripts law', color: 'red'},
-                        ]},
-                ],
-                PopLaws:[
-                    {name:'Isolation',description:' (Close border for all)',
-                        modifiers:[
-                            {value: '-5%', to:'population', from: 'Isolation', color: 'red'},
-                            {value: '-5%', to:'industry', from: 'Isolation', color: 'red'},
-                            {value: '+15%', to:'defence army', from: 'Isolation', color: 'green'},
-                        ]},
-                    {name:'Free medicine',description:' (Medicine is free for everyone)',
-                        modifiers:[
-                            {value: '+5%', to:'population', from: 'Free medicine', color: 'green'},
-                            {value: '-10%', to:'industry', from: 'Free medicine', color: 'red'},
-                        ]},
-                    {name:'Free housing',description:' (Gift flat for every family)',
-                        modifiers:[
-                            {value: '+5%', to:'population', from: 'Free housing', color: 'green'},
-                            {value: '-10%', to:'industry', from: 'Free housing', color: 'red'},
-                            {value: '+10%', to:'defence army', from: 'Free housing', color: 'green'},
-                            {value: '-10%', to:'attack army', from: 'Free housing', color: 'red'},
-                        ]},
-                    {name:'Free education',description:' (Education is free for everyone)',
-                        modifiers:[
-                            {value: '-2%', to:'population', from: 'Free education', color: 'red'},
-                            {value: '+15%', to:'industry', from: 'Free education', color: 'green'},
-                            {value: '-10%', to:'attack army', from: 'Free education', color: 'red'},
-                        ]},
-                ],
+                conscriptsLaw: 'Conscript law: Volunteer',
+                conscriptionLaws:[],
+                popLaws:[],
                 selectedLaws: [],
             }
         },
@@ -155,12 +96,14 @@
                     {
                         console.log(response.data)
                         console.log(response.status)
-                        response.data.forEach(element => {
+                        this.conscriptionLaws = response.data['conscription_laws']
+                        this.popLaws = response.data['pop_laws']
+                        this.selectedLaws = response.data['selected_laws']
+                        response.data['selected_laws'].forEach(element => {
                             if (element.includes('Conscript law: '))
-                                this.conscriptsLaw = element.split('Conscript law: ')[1]
+                                this.conscriptsLaw = element
 
                         });
-                        this.selectedLaws = response.data
                     }
                 }).catch(error => {
                     if (error.response) {
@@ -220,7 +163,7 @@
                 console.log(name)
                 let userId = this.$cookies.get('userId')
                 let token = this.$cookies.get('token')
-                GameService.setPoliticsLaw(userId,token,'Conscript law: '+name).then(response => {
+                GameService.setPoliticsLaw(userId,token,name).then(response => {
                     if (response.status === 200)
                     {
                         console.log(response.data)
