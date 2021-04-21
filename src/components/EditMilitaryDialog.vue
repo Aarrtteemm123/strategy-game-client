@@ -9,7 +9,7 @@
           <v-container>
             <v-row>
               <v-col cols="12">
-                <v-text-field label="Numbers now*" v-model="numberUnits" required></v-text-field>
+                <v-text-field type="number" :rules="[numberUnitsRules.required, numberUnitsRules.min]" label="Numbers now*" v-model="numberUnits" required></v-text-field>
                 <v-card-text>Manpower: {{unit.manpower}}</v-card-text>
                 <v-card-text>On storage: {{unit.weaponOnStorage}}</v-card-text>
                 <v-card-text>1 unit = {{unit.peopleOnUnit}} people</v-card-text>
@@ -50,7 +50,11 @@
             return{
                 snackbarVisible: false,
                 error: '',
-                numberUnits: 0
+                numberUnits: 0,
+                numberUnitsRules: {
+                    required: value => !!value || 'Required',
+                    min: v => Number(v) >= 0 || 'The value must be more than 0 or equal to 0',
+                },
             }
         },
         methods:{
@@ -65,26 +69,27 @@
             },
             saveChanges()
             {
-                this.unit.dialog = false
-                console.log(this.unit.name)
-                console.log(this.unit.number)
-                let userId = this.$cookies.get('userId')
-                let token = this.$cookies.get('token')
-                GameService.editArmy(userId,token,this.unit.name,this.numberUnits).then(response => {
-                    if (response.status === 200)
-                    {
-                        console.log(response.data)
-                        console.log(response.status)
-                        this.$emit('update-army-page')
-                    }
-                }).catch(error => {
-                    if (error.response) {
-                        this.snackbarVisible = true;
-                        this.error = error.response.data
-                        console.log(error.response.data);
-                        console.log(error.response.status);
-                    }
-                })
+                if (this.numberUnitsRules.min(this.numberUnits) === true && this.numberUnitsRules.required(this.numberUnits) === true)
+                {
+                    this.unit.dialog = false
+                    let userId = this.$cookies.get('userId')
+                    let token = this.$cookies.get('token')
+                    GameService.editArmy(userId,token,this.unit.name,this.numberUnits).then(response => {
+                        if (response.status === 200)
+                        {
+                            console.log(response.data)
+                            console.log(response.status)
+                            this.$emit('update-army-page')
+                        }
+                    }).catch(error => {
+                        if (error.response) {
+                            this.snackbarVisible = true;
+                            this.error = error.response.data
+                            console.log(error.response.data);
+                            console.log(error.response.status);
+                        }
+                    })
+                }
             }
         },
         mounted()

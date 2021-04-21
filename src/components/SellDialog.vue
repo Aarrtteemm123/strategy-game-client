@@ -12,6 +12,8 @@
                   v-model="numberSelling"
                   label="Numbers"
                   type="number"
+                  :rules="[numberSellingRules.required, numberSellingRules.min]"
+                  required
           ></v-text-field>
           <p>Profit: {{numberSelling*goods.price}}$</p>
           <p>Max sell: {{goods.have}} tonnes</p>
@@ -50,6 +52,10 @@
         {
             return{
                 numberSelling:0,
+                numberSellingRules: {
+                    required: value => !!value || 'Required',
+                    min: v => Number(v) > 0 || 'Value must be more then 0',
+                },
             }
         },
         methods:
@@ -61,25 +67,28 @@
 
             sell(name,number)
             {
-                let userId = this.$cookies.get('userId')
-                let token = this.$cookies.get('token')
-                GameService.sellGoods(userId,token,name,number).then(response => {
-                    if (response.status === 200)
-                    {
-                        console.log(response.data)
-                        console.log(response.status)
-                        if (this.goods.have - Number(this.numberSelling) >= 0 && Number(this.numberSelling) > 0)
-                            this.goods.have -= Number(this.numberSelling)
-                        this.closeSellDialog()
-                    }
-                }).catch(error => {
-                    if (error.response) {
-                        this.$emit('get-error', error.response.data)
-                        this.closeSellDialog()
-                        console.log(error.response.data);
-                        console.log(error.response.status);
-                    }
-                })
+                if (this.numberSellingRules.min(this.numberSelling) === true && this.numberSellingRules.required(this.numberSelling) === true)
+                {
+                    let userId = this.$cookies.get('userId')
+                    let token = this.$cookies.get('token')
+                    GameService.sellGoods(userId,token,name,number).then(response => {
+                        if (response.status === 200)
+                        {
+                            console.log(response.data)
+                            console.log(response.status)
+                            if (this.goods.have - Number(this.numberSelling) >= 0 && Number(this.numberSelling) > 0)
+                                this.goods.have -= Number(this.numberSelling)
+                            this.closeSellDialog()
+                        }
+                    }).catch(error => {
+                        if (error.response) {
+                            this.$emit('get-error', error.response.data)
+                            this.closeSellDialog()
+                            console.log(error.response.data);
+                            console.log(error.response.status);
+                        }
+                    })
+                }
             },
         }
     }

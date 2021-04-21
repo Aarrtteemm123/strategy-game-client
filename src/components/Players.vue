@@ -264,7 +264,7 @@
             },
             searchPlayers()
             {
-                if (this.searchText != null)
+                if (this.searchText != null && this.searchText !== '')
                 {
                     console.log('Inside account updatePage')
                     let userId = this.$cookies.get('userId')
@@ -304,6 +304,8 @@
                         if (error.response) {
                             this.snackbarVisible = true;
                             this.error = error.response.data
+                            if (error.response.status === 404)
+                                this.error = 'Player not found'
                             console.log(error.response.data);
                             console.log(error.response.status);
                         }

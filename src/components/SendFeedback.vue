@@ -66,6 +66,11 @@
                         console.log(response.status)
                         alert('Thank you for feedback!')
                     }
+                    if (response.status === 208)
+                    {
+                        this.snackbarVisible = true;
+                        this.error = response.data
+                    }
                 }).catch(error => {
                     if (error.response) {
                         this.snackbarVisible = true;

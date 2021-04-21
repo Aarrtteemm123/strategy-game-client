@@ -45,19 +45,20 @@
               <span class="headline">User Profile</span>
             </v-card-title>
             <v-card-text>
-              <v-container>
+              <v-form ref="form" lazy-validation>
                 <v-row>
                   <v-col cols="12" sm="6" >
-                    <v-text-field label="Flag*" v-model="srcFlagImage" required></v-text-field>
+                    <v-text-field :rules="flagImgRules" label="Flag*" v-model="srcFlagImage" required></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="6">
-                    <v-text-field v-model="nameCountry" label="Name country*"></v-text-field>
+                    <v-text-field :rules="countryRules" v-model="nameCountry" label="Name country*"></v-text-field>
                   </v-col>
                   <v-col cols="12">
                     <v-text-field disabled v-model="username" label="Username*" required></v-text-field>
                   </v-col>
                   <v-col cols="12">
                     <v-text-field
+                            :rules="passwordRules"
                             @click:append="showPassword = !showPassword" v-model="password"
                             :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
                             :type="showPassword ? 'text' : 'password'"
@@ -67,7 +68,7 @@
                     <v-text-field disabled v-model="email" label="Email*" required></v-text-field>
                   </v-col>
                 </v-row>
-              </v-container>
+              </v-form>
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
@@ -147,6 +148,16 @@
             return{
                 snackbarVisible: false,
                 error: '',
+                passwordRules: [
+                    v => !!v || 'Password is required',
+                    v => (v && v.length > 8) || 'Password must be contains more than 8 characters',
+                ],
+                countryRules: [
+                    v => !!v || 'Country name is required',
+                ],
+                flagImgRules: [
+                    v => !!v || 'Flag link is required',
+                ],
 
                 srcFlagImage: '',
                 nameCountry: '',
@@ -166,6 +177,10 @@
             }
         },
         methods:{
+            validate () {
+                return this.$refs.form.validate()
+            },
+
             closeSnackbar()
             {
                 this.snackbarVisible = false
@@ -205,25 +220,28 @@
             editUserData()
             {
                 // edit user data
-                let userId = this.$cookies.get('userId')
-                let token = this.$cookies.get('token')
-                UserService.changeUserData(userId,token,this.password,
-                    this.email,this.nameCountry,this.srcFlagImage).then(response => {
-                    if (response.status === 200)
-                    {
-                        console.log(response.data)
-                        console.log(response.status)
-                        this.isOpenEditDialog = false;
-                    }
-                }).catch(error => {
-                    if (error.response) {
-                        this.snackbarVisible = true;
-                        this.error = error.response.data
-                        console.log(error.response.data);
-                        console.log(error.response.status);
-                        this.isOpenEditDialog = false;
-                    }
-                })
+                if (this.validate())
+                {
+                    let userId = this.$cookies.get('userId')
+                    let token = this.$cookies.get('token')
+                    UserService.changeUserData(userId,token,this.password,
+                        this.email,this.nameCountry,this.srcFlagImage).then(response => {
+                        if (response.status === 200)
+                        {
+                            console.log(response.data)
+                            console.log(response.status)
+                            this.isOpenEditDialog = false;
+                        }
+                    }).catch(error => {
+                        if (error.response) {
+                            this.snackbarVisible = true;
+                            this.error = error.response.data
+                            console.log(error.response.data);
+                            console.log(error.response.status);
+                            this.isOpenEditDialog = false;
+                        }
+                    })
+                }
             },
             cancelDeleteAccount()
             {

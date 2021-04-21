@@ -12,6 +12,8 @@
                   v-model="numberBuying"
                   label="Numbers"
                   type="number"
+                  :rules="[numberBuyingRules.required, numberBuyingRules.min]"
+                  required
           ></v-text-field>
           <p>Total price: {{numberBuying*goods.price}}$</p>
           <p>Max buy: {{goods.warehouseCapacity - goods.have}} tonnes</p>
@@ -49,7 +51,11 @@
         data()
         {
             return{
-                numberBuying:0
+                numberBuying:0,
+                numberBuyingRules: {
+                    required: value => !!value || 'Required',
+                    min: v => Number(v) > 0 || 'Value must be more then 0',
+                },
             }
         },
         methods:
@@ -61,25 +67,28 @@
 
             buy(name,number)
             {
-                let userId = this.$cookies.get('userId')
-                let token = this.$cookies.get('token')
-                GameService.buyGoods(userId,token,name,number).then(response => {
-                    if (response.status === 200)
-                    {
-                        console.log(response.data)
-                        console.log(response.status)
-                        if (this.goods.have + Number(this.numberBuying) <= this.goods.warehouseCapacity && Number(this.numberBuying) > 0)
-                          this.goods.have += Number(this.numberBuying)
-                        this.closeBuyDialog()
-                    }
-                }).catch(error => {
-                    if (error.response) {
-                        this.$emit('get-error', error.response.data)
-                        this.closeBuyDialog()
-                        console.log(error.response.data);
-                        console.log(error.response.status);
-                    }
-                })
+                if (this.numberBuyingRules.min(this.numberBuying) === true && this.numberBuyingRules.required(this.numberBuying) === true)
+                {
+                    let userId = this.$cookies.get('userId')
+                    let token = this.$cookies.get('token')
+                    GameService.buyGoods(userId,token,name,number).then(response => {
+                        if (response.status === 200)
+                        {
+                            console.log(response.data)
+                            console.log(response.status)
+                            if (this.goods.have + Number(this.numberBuying) <= this.goods.warehouseCapacity && Number(this.numberBuying) > 0)
+                                this.goods.have += Number(this.numberBuying)
+                            this.closeBuyDialog()
+                        }
+                    }).catch(error => {
+                        if (error.response) {
+                            this.$emit('get-error', error.response.data)
+                            this.closeBuyDialog()
+                            console.log(error.response.data);
+                            console.log(error.response.status);
+                        }
+                    })
+                }
             }
         }
     }
