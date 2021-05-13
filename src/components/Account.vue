@@ -57,14 +57,6 @@
                     <v-text-field disabled v-model="username" label="Username*" required></v-text-field>
                   </v-col>
                   <v-col cols="12">
-                    <v-text-field
-                            :rules="passwordRules"
-                            @click:append="showPassword = !showPassword" v-model="password"
-                            :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-                            :type="showPassword ? 'text' : 'password'"
-                            label="Password*" required></v-text-field>
-                  </v-col>
-                  <v-col cols="12">
                     <v-text-field disabled v-model="email" label="Email*" required></v-text-field>
                   </v-col>
                 </v-row>
@@ -148,10 +140,6 @@
             return{
                 snackbarVisible: false,
                 error: '',
-                passwordRules: [
-                    v => !!v || 'Password is required',
-                    v => (v && v.length > 8) || 'Password must be contains more than 8 characters',
-                ],
                 countryRules: [
                     v => !!v || 'Country name is required',
                 ],
@@ -203,7 +191,6 @@
                         this.economicPlace = response.data['economic_place']
                         this.militaryPlace = response.data['military_place']
                         this.username = response.data['username']
-                        this.password = response.data['password']
                         this.email = response.data['email']
                         this.dataRegistration = response.data['date_registration']
                         this.days = response.data['days_in_game']
@@ -224,7 +211,7 @@
                 {
                     let userId = this.$cookies.get('userId')
                     let token = this.$cookies.get('token')
-                    UserService.changeUserData(userId,token,this.password,
+                    UserService.changeUserData(userId,token,
                         this.email,this.nameCountry,this.srcFlagImage).then(response => {
                         if (response.status === 200)
                         {
